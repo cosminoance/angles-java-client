@@ -1,6 +1,7 @@
-package com.angles.api.models;
+package com.angles.api.models.build;
 
 import com.angles.ExecutionStatus;
+import com.angles.api.models.BaseModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

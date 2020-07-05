@@ -3,11 +3,14 @@ package com.angles.api.requests;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Map;
 
 public abstract class BaseRequests {
 
@@ -34,6 +37,19 @@ public abstract class BaseRequests {
         httpGet.setHeader("Accept", "application/json");
         return client.execute(httpGet);
     }
+
+    protected CloseableHttpResponse sendJSONGet(String path, Map<String, Object> parameters) throws IOException, URISyntaxException {
+        URIBuilder builder = new URIBuilder(baseUrl.concat(path));
+        if (parameters != null && parameters.size() > 0) {
+            for (String key: parameters.keySet()) {
+                builder.setParameter(key, parameters.get(key).toString());
+            }
+        }
+        HttpGet httpGet = new HttpGet(builder.build());
+        httpGet.setHeader("Accept", "application/json");
+        return client.execute(httpGet);
+    }
+
 
     protected CloseableHttpResponse sendDelete(String path) throws IOException {
         HttpDelete httpDelete = new HttpDelete(baseUrl.concat(path));

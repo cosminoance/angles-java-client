@@ -1,6 +1,7 @@
-package com.angles.api.models;
+package com.angles.api.models.build;
 
 
+import com.angles.api.models.BaseModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Getter @Setter @NoArgsConstructor
-public class BuildResponse extends BaseModel{
+public class BuildResponse extends BaseModel {
 
     private String environment;
     private String team;

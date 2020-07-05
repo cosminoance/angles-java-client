@@ -1,5 +1,6 @@
-package com.angles.api.models;
+package com.angles.api.models.execution;
 
+import com.angles.api.models.execution.Step;
 import lombok.Getter;
 import lombok.Setter;
 
