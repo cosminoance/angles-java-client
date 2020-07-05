@@ -1,6 +1,7 @@
 package com.angles.api.requests;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -12,7 +13,8 @@ public abstract class BaseRequests {
 
     protected CloseableHttpClient client = HttpClients.createDefault();
     protected String baseUrl;
-    protected Gson gson = new Gson();
+//    protected Gson gson = new Gson();
+    protected Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
 
     protected BaseRequests(String baseUrl) {
         this.baseUrl = baseUrl;
