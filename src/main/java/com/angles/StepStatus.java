@@ -4,5 +4,6 @@ public enum StepStatus {
     PASS,
     FAIL,
     ERROR,
-    INFO
+    INFO,
+    DEBUG
 }

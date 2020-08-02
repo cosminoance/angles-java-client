@@ -1,19 +1,12 @@
 package com.angles.api.requests;
 
-import com.angles.StepStatus;
-import com.angles.api.models.Environment;
-import com.angles.api.models.build.Artifact;
-import com.angles.api.models.build.Build;
+import com.angles.api.models.Platform;
 import com.angles.api.models.execution.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
-import sun.awt.PlatformFont;
 
 import java.io.IOException;
-import java.util.Date;
 
 public class ExecutionRequests extends BaseRequests {
 
@@ -24,10 +17,11 @@ public class ExecutionRequests extends BaseRequests {
 
     public Execution create(CreateExecution createExecution) throws IOException {
         CloseableHttpResponse response = sendJSONPost(basePath, createExecution);
+        String responseBody = EntityUtils.toString(response.getEntity());
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
-            String responseBody = EntityUtils.toString(response.getEntity());
-            System.out.println(responseBody);
             return gson.fromJson(responseBody, Execution.class);
+        } else {
+            System.out.println(response.getStatusLine().getStatusCode() + ": " + responseBody);
         }
         return null;
     }

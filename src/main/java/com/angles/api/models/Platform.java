@@ -1,4 +1,4 @@
-package com.angles.api.models.execution;
+package com.angles.api.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +12,6 @@ public class Platform {
     private String browserName;
     private String browserVersion;
     private String deviceName;
-    private String deviceBrand;
-    private String deviceModel;
     private String userAgent;
     private Integer screenHeight;
     private Integer screenWidth;
@@ -26,24 +24,20 @@ public class Platform {
         this.browserVersion = browserVersion;
     }
 
-    public Platform(String platformName, String platformVersion, String browserName, String browserVersion, String deviceName, String deviceBrand, String deviceModel) {
+    public Platform(String platformName, String platformVersion, String browserName, String browserVersion, String deviceName) {
         this.platformName = platformName;
         this.platformVersion = platformVersion;
         this.browserName = browserName;
         this.browserVersion = browserVersion;
         this.deviceName = deviceName;
-        this.deviceBrand = deviceBrand;
-        this.deviceModel = deviceModel;
     }
 
-    public Platform(String platformName, String platformVersion, String browserName, String browserVersion, String deviceName, String deviceBrand, String deviceModel, String userAgent, Integer screenHeight, Integer screenWidth, Float pixelRatio) {
+    public Platform(String platformName, String platformVersion, String browserName, String browserVersion, String deviceName, String userAgent, Integer screenHeight, Integer screenWidth, Float pixelRatio) {
         this.platformName = platformName;
         this.platformVersion = platformVersion;
         this.browserName = browserName;
         this.browserVersion = browserVersion;
         this.deviceName = deviceName;
-        this.deviceBrand = deviceBrand;
-        this.deviceModel = deviceModel;
         this.userAgent = userAgent;
         this.screenHeight = screenHeight;
         this.screenWidth = screenWidth;

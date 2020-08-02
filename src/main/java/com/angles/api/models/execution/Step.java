@@ -2,11 +2,12 @@ package com.angles.api.models.execution;
 
 import com.angles.StepStatus;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
 
-@Setter @Getter
+@Setter @Getter @NoArgsConstructor
 public class Step {
 
     private String name;

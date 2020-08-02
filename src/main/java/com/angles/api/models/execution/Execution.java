@@ -1,6 +1,7 @@
 package com.angles.api.models.execution;
 
 import com.angles.api.models.BaseModel;
+import com.angles.api.models.Platform;
 import com.angles.api.models.build.BuildResponse;
 import lombok.Getter;
 import lombok.Setter;

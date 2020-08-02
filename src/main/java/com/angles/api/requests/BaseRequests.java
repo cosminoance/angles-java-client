@@ -2,9 +2,11 @@ package com.angles.api.requests;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
@@ -26,13 +28,27 @@ public abstract class BaseRequests {
     protected CloseableHttpResponse sendJSONPost(String path, Object message) throws IOException {
         HttpPost httpPost = new HttpPost(baseUrl.concat(path));
         StringEntity entity = new StringEntity(gson.toJson(message));
+        System.out.println(Thread.currentThread().getId() + " - POST: " + gson.toJson(message));
         httpPost.setEntity(entity);
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-type", "application/json");
         return client.execute(httpPost);
     }
 
+    protected CloseableHttpResponse sendMultiPartEntity(String path, Map<String, String> headers, HttpEntity entity) throws IOException {
+        HttpPost httpPost = new HttpPost(baseUrl.concat(path));
+        //handle headers
+        for (String key: headers.keySet()) {
+            httpPost.setHeader(key, headers.get(key));
+        }
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setEntity(entity);
+
+        return client.execute(httpPost);
+    }
+
     protected CloseableHttpResponse sendJSONGet(String path) throws IOException {
+        System.out.println(Thread.currentThread().getId() + " - GET: " + path);
         HttpGet httpGet = new HttpGet(baseUrl.concat(path));
         httpGet.setHeader("Accept", "application/json");
         return client.execute(httpGet);
@@ -60,6 +76,7 @@ public abstract class BaseRequests {
     protected CloseableHttpResponse sendJSONPut(String path, Object message) throws IOException {
         HttpPut httpPut = new HttpPut(baseUrl.concat(path));
         StringEntity entity = new StringEntity(gson.toJson(message));
+        System.out.println(Thread.currentThread().getId() + " - PUT: " + gson.toJson(message));
         httpPut.setEntity(entity);
         httpPut.setHeader("Accept", "application/json");
         httpPut.setHeader("Content-type", "application/json");

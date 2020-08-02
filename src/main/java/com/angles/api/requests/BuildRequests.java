@@ -1,10 +1,8 @@
 package com.angles.api.requests;
 
-import com.angles.api.models.Environment;
 import com.angles.api.models.build.Artifact;
 import com.angles.api.models.build.Build;
 import com.angles.api.models.build.CreateBuild;
-import com.angles.api.models.execution.Platform;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -23,9 +21,11 @@ public class BuildRequests extends BaseRequests {
 
     public Build create(CreateBuild createBuild) throws IOException {
         CloseableHttpResponse response = sendJSONPost(basePath, createBuild);
+        String responseBody = EntityUtils.toString(response.getEntity());
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
-            String responseBody = EntityUtils.toString(response.getEntity());
             return gson.fromJson(responseBody, Build.class);
+        } else {
+            System.out.println(response.getStatusLine().getStatusCode() + ": " + responseBody);
         }
         return null;
     }
