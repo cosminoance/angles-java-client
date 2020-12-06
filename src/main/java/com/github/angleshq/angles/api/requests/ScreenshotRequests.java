@@ -1,10 +1,7 @@
 package com.github.angleshq.angles.api.requests;
 
 import com.github.angleshq.angles.api.models.Platform;
-import com.github.angleshq.angles.api.models.screenshot.CreateScreenshot;
-import com.github.angleshq.angles.api.models.screenshot.CreateScreenshotResponse;
-import com.github.angleshq.angles.api.models.screenshot.Screenshot;
-import com.github.angleshq.angles.api.models.screenshot.UpdateScreenshot;
+import com.github.angleshq.angles.api.models.screenshot.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -75,6 +72,15 @@ public class ScreenshotRequests extends BaseRequests {
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             String responseBody = EntityUtils.toString(response.getEntity());
             return gson.fromJson(responseBody, Screenshot.class);
+        }
+        return null;
+    }
+
+    public ImageCompareResponse baselineCompare(String screenshotId) throws IOException {
+        CloseableHttpResponse response = sendJSONGet(basePath + "/" + screenshotId + "/baseline/compare");
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            String responseBody = EntityUtils.toString(response.getEntity());
+            return gson.fromJson(responseBody, ImageCompareResponse.class);
         }
         return null;
     }

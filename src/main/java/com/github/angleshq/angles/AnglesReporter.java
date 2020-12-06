@@ -128,23 +128,23 @@ public class AnglesReporter {
         addStep(name, expected, actual, info, StepStatus.PASS, null);
     }
 
-    public void pass(String name, String expected, String actual, String info, ScreenshotDetails screenshotDetails) {
-        addStep(name, expected, actual, info, StepStatus.PASS, screenshotDetails);
+    public void pass(String name, String expected, String actual, String info, String screenshotId) {
+        addStep(name, expected, actual, info, StepStatus.PASS, screenshotId);
     }
 
     public void fail(String name, String expected, String actual, String info) {
         addStep(name, expected, actual, info, StepStatus.FAIL);
     }
 
-    public void fail(String name, String expected, String actual, String info, ScreenshotDetails screenshotDetails) {
-        addStep(name, expected, actual, info, StepStatus.FAIL, screenshotDetails);
+    public void fail(String name, String expected, String actual, String info, String screenshotId) {
+        addStep(name, expected, actual, info, StepStatus.FAIL, screenshotId);
     }
 
     private void addStep(String name, String expected, String actual, String info, StepStatus status) {
         addStep(name, expected, actual, info, status, null);
     }
 
-    private void addStep(String name, String expected, String actual, String info, StepStatus status, ScreenshotDetails screenshotDetails) {
+    private void addStep(String name, String expected, String actual, String info, StepStatus status, String screenshotId) {
         Step step = new Step();
         step.setTimestamp(new Date());
         step.setStatus(status);
@@ -152,15 +152,13 @@ public class AnglesReporter {
         step.setExpected(expected);
         step.setActual(actual);
         step.setInfo(info);
-        if (screenshotDetails !=null) {
-            // store details
-            CreateScreenshotResponse response = storeScreenshot(screenshotDetails);
-            step.setScreenshot(response.getId());
+        if (screenshotId !=null) {
+            step.setScreenshot(screenshotId);
         }
         currentAction.get().addStep(step);
     }
 
-    private CreateScreenshotResponse storeScreenshot(ScreenshotDetails details) {
+    public CreateScreenshotResponse storeScreenshot(ScreenshotDetails details) {
         CreateScreenshot createScreenshot = new CreateScreenshot();
         createScreenshot.setBuildId(currentBuild.getId());
         createScreenshot.setTimestamp(new Date());
@@ -176,6 +174,14 @@ public class AnglesReporter {
             return response;
         } catch (IOException exception) {
             throw new Error("Unable store screenshot due to [" + exception.getMessage() + "]");
+        }
+    }
+
+    public ImageCompareResponse compareScreenshotAgainstBaseline(String screenshotId) {
+        try {
+            return screenshotRequests.baselineCompare(screenshotId);
+        } catch (IOException exception) {
+            throw new Error("Unable compare screenshot with baseline due to [" + exception.getMessage() + "]");
         }
     }
 

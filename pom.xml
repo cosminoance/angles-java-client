@@ -6,8 +6,31 @@
 
     <groupId>com.github.angleshq</groupId>
     <artifactId>angles-java-client</artifactId>
-    <version>1.0.0-BETA2-SNAPSHOT</version>
+    <version>1.0.0-BETA2</version>
 
+    <name>Angles Java client</name>
+    <description>This is the java client for the Angles test results dashboard and contains all the necessary methods to store your test results in the Angles dashboard</description>
+    <url>https://github.com/AnglesHQ/angles-java-client</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software Licence, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Sergio Neves Barros</name>
+            <email>s.nevesbarros@gmail.com</email>
+            <organization>AnglesHQ</organization>
+            <organizationUrl>https://github.com/AnglesHQ</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:AnglesHQ/angles-java-client.git</connection>
+        <developerConnection>scm:git:git@github.com:AnglesHQ/angles-java-client.git</developerConnection>
+        <url>https://github.com/AnglesHQ/angles-java-client/tree/master</url>
+    </scm>
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -35,6 +58,49 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <keyname>069bb90b0f47d1d7</keyname>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
