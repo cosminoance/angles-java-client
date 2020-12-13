@@ -12,6 +12,7 @@ import com.github.angleshq.angles.api.requests.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AnglesReporter {
@@ -166,11 +167,8 @@ public class AnglesReporter {
         createScreenshot.setFilePath(details.getPath());
         try {
             CreateScreenshotResponse response = screenshotRequests.create(createScreenshot);
-            System.out.println(response.getId());
-            if (details.getPlatform() != null) {
-                // we need to store the platform details
-                updateScreenshot(response.getId(), details.getPlatform());
-            }
+            // we need to store the platform details or tags
+            storeScreenshotDetails(response.getId(), details);
             return response;
         } catch (IOException exception) {
             throw new Error("Unable store screenshot due to [" + exception.getMessage() + "]");
@@ -185,13 +183,16 @@ public class AnglesReporter {
         }
     }
 
-    private Screenshot updateScreenshot(String screenshotId, Platform platform) {
-        UpdateScreenshot updateScreenshot = new UpdateScreenshot();
-        updateScreenshot.setPlatform(platform);
-        try {
-            return screenshotRequests.update(screenshotId, updateScreenshot);
-        } catch (IOException exception) {
-            throw new Error("Unable update screenshot due to [" + exception.getMessage() + "]");
+    private void storeScreenshotDetails(String screenshotId, ScreenshotDetails details) {
+        if (details.getPlatform() != null || details.getTags() != null) {
+            UpdateScreenshot updateScreenshot = new UpdateScreenshot();
+            if (details.getPlatform() != null) updateScreenshot.setPlatform(details.getPlatform());
+            if (details.getTags() != null) updateScreenshot.setTags(details.getTags());
+            try {
+                screenshotRequests.update(screenshotId, updateScreenshot);
+            } catch (IOException exception) {
+                throw new Error("Unable update screenshot due to [" + exception.getMessage() + "]");
+            }
         }
     }
 }
