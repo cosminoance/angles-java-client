@@ -1,6 +1,6 @@
 package com.github.angleshq.angles;
 
-import com.github.angleshq.angles.api.models.Platform;
+import com.github.angleshq.angles.api.models.build.Artifact;
 import com.github.angleshq.angles.api.models.build.Build;
 import com.github.angleshq.angles.api.models.build.CreateBuild;
 import com.github.angleshq.angles.api.models.execution.Action;
@@ -12,11 +12,11 @@ import com.github.angleshq.angles.api.requests.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AnglesReporter {
 
+    public static final String DEFAULT_ACTION_NAME = "Test Details";
     private static Map<String, AnglesReporter> reporterMap = new HashMap<>();
     private String baseUrl;
     private BuildRequests buildRequests;
@@ -26,8 +26,8 @@ public class AnglesReporter {
     private ScreenshotRequests screenshotRequests;
 
     private Build currentBuild;
-    private ThreadLocal<CreateExecution> currentExecution = new ThreadLocal<>();
-    private ThreadLocal<Action> currentAction = new ThreadLocal<>();
+    private InheritableThreadLocal<CreateExecution> currentExecution = new InheritableThreadLocal<>();
+    private InheritableThreadLocal<Action> currentAction = new InheritableThreadLocal<>();
 
     public static AnglesReporter getInstance(String url) {
         if (!reporterMap.containsKey(url)) {
@@ -46,7 +46,6 @@ public class AnglesReporter {
     }
 
     public synchronized void startBuild(String name, String environmentName, String teamName, String componentName) {
-        System.out.println("Creating Build [" + name + "]");
         if (currentBuild != null) {
             return;
         }
@@ -62,67 +61,63 @@ public class AnglesReporter {
         }
     }
 
+    public synchronized void storeArtifacts(Artifact[] artifacts) {
+        try {
+            currentBuild = buildRequests.artifacts(currentBuild.getId(), artifacts);
+        } catch (IOException exception) {
+            throw new Error("Unable to create build due to [" + exception.getMessage() + "]");
+        }
+    }
+
     public void startTest(String suiteName, String testName) {
-        System.out.println("Starting Test [" + testName + "]");
         CreateExecution createExecution = new CreateExecution();
         createExecution.setStart(new Date());
         createExecution.setBuild(currentBuild.getId());
         createExecution.setTitle(testName);
         createExecution.setSuite(suiteName);
         currentExecution.set(createExecution);
+        currentAction.set(null);
     }
 
     public void saveTest() {
-        System.out.println(Thread.currentThread().getId() + " - Saving Test");
         try {
             executionRequests.create(currentExecution.get());
         }  catch (IOException exception) {
             throw new Error("Unable to save/update test execution due to [" + exception.getMessage() + "]");
         }
-
     }
 
     public void startAction(String description) {
-        System.out.println("Adding action [" + description + "]");
+        if (this.currentExecution.get() == null) {
+            //if no test has been created assume it's the setup
+            this.startTest("Set-up", "Set-up");
+        }
         this.currentAction.set(new Action(description));
         this.currentExecution.get().getActions().add(this.currentAction.get());
     }
 
-    public void info(String info) {
-        if (currentAction.get() == null) {
-            currentAction.set(new Action("Default"));
-        }
-        Step step = new Step();
-        step.setName("info");
-        step.setTimestamp(new Date());
-        step.setStatus(StepStatus.INFO);
-        step.setInfo(info);
-        currentAction.get().addStep(step);
+    public void debug(String debug) {
+        addStep("debug", null, null, debug, StepStatus.DEBUG, null);
     }
 
-    public void debug(String info) {
-        if (currentAction.get() == null) {
-            currentAction.set(new Action("Default"));
-        }
-        // add a flag to stop this if debugging is turned off.
-        Step step = new Step();
-        step.setName("debug");
-        step.setTimestamp(new Date());
-        step.setStatus(StepStatus.DEBUG);
-        step.setInfo(info);
-        currentAction.get().addStep(step);
+    public void debug(String debug, String screenshotId) {
+        addStep("debug", null, null, debug, StepStatus.DEBUG, screenshotId);
     }
 
     public void error(String error) {
-        if (currentAction.get() == null) {
-            currentAction.set(new Action("Default"));
-        }
-        Step step = new Step();
-        step.setName("error");
-        step.setTimestamp(new Date());
-        step.setStatus(StepStatus.ERROR);
-        step.setInfo(error);
-        currentAction.get().addStep(step);
+        addStep("error", null, null, error, StepStatus.ERROR, null);
+    }
+
+    public void error(String error, String screenshotId) {
+        addStep("error", null, null, error, StepStatus.ERROR, screenshotId);
+    }
+
+    public void info(String info) {
+        addStep("info", null, null, info, StepStatus.INFO, null);
+    }
+
+    public void info(String info, String screenshotId) {
+        addStep("info", null, null, info, StepStatus.INFO, screenshotId);
     }
 
     public void pass(String name, String expected, String actual, String info) {
@@ -146,6 +141,9 @@ public class AnglesReporter {
     }
 
     private void addStep(String name, String expected, String actual, String info, StepStatus status, String screenshotId) {
+        if (currentAction.get() == null) {
+            startAction(DEFAULT_ACTION_NAME);
+        }
         Step step = new Step();
         step.setTimestamp(new Date());
         step.setStatus(status);

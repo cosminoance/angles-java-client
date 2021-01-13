@@ -3,6 +3,7 @@ package com.github.angleshq.angles.api.requests;
 import com.github.angleshq.angles.api.models.build.Artifact;
 import com.github.angleshq.angles.api.models.build.Build;
 import com.github.angleshq.angles.api.models.build.CreateBuild;
+import com.github.angleshq.angles.api.models.build.StoreArtifacts;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -85,7 +86,9 @@ public class BuildRequests extends BaseRequests {
     }
 
     public Build artifacts(String buildId, Artifact[] artifacts) throws IOException {
-        CloseableHttpResponse response = sendJSONPut(basePath + "/" + buildId + "/artifacts", artifacts);
+        StoreArtifacts request = new StoreArtifacts();
+        request.setArtifacts(artifacts);
+        CloseableHttpResponse response = sendJSONPut(basePath + "/" + buildId + "/artifacts", request);
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             String responseBody = EntityUtils.toString(response.getEntity());
             return gson.fromJson(responseBody, Build.class);

@@ -17,7 +17,6 @@ public abstract class BaseRequests {
 
     protected CloseableHttpClient client = HttpClients.createDefault();
     protected String baseUrl;
-//    protected Gson gson = new Gson();
     protected Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
 
     protected BaseRequests(String baseUrl) {
@@ -27,7 +26,6 @@ public abstract class BaseRequests {
     protected CloseableHttpResponse sendJSONPost(String path, Object message) throws IOException {
         HttpPost httpPost = new HttpPost(baseUrl.concat(path));
         StringEntity entity = new StringEntity(gson.toJson(message));
-        System.out.println(Thread.currentThread().getId() + " - POST: " + gson.toJson(message));
         httpPost.setEntity(entity);
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-type", "application/json");
@@ -47,7 +45,6 @@ public abstract class BaseRequests {
     }
 
     protected CloseableHttpResponse sendJSONGet(String path) throws IOException {
-        System.out.println(Thread.currentThread().getId() + " - GET: " + path);
         HttpGet httpGet = new HttpGet(baseUrl.concat(path));
         httpGet.setHeader("Accept", "application/json");
         return client.execute(httpGet);

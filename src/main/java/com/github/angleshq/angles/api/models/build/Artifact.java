@@ -1,12 +1,12 @@
 package com.github.angleshq.angles.api.models.build;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @AllArgsConstructor @RequiredArgsConstructor
 public class Artifact {
-    private String artifactId;
     private String groupId;
+    @NonNull
+    private String artifactId;
+    @NonNull
     private String version;
 }
