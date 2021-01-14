@@ -25,7 +25,7 @@ public class AnglesReporter {
     private TeamRequests teamRequests;
     private ScreenshotRequests screenshotRequests;
 
-    private Build currentBuild;
+    private InheritableThreadLocal<Build> currentBuild = new InheritableThreadLocal<>();
     private InheritableThreadLocal<CreateExecution> currentExecution = new InheritableThreadLocal<>();
     private InheritableThreadLocal<Action> currentAction = new InheritableThreadLocal<>();
 
@@ -46,7 +46,7 @@ public class AnglesReporter {
     }
 
     public synchronized void startBuild(String name, String environmentName, String teamName, String componentName) {
-        if (currentBuild != null) {
+        if (currentBuild.get() != null) {
             return;
         }
         CreateBuild createBuild = new CreateBuild();
@@ -55,7 +55,7 @@ public class AnglesReporter {
         createBuild.setTeam(teamName);
         createBuild.setComponent(componentName);
         try {
-            currentBuild = buildRequests.create(createBuild);
+            currentBuild.set(buildRequests.create(createBuild));
         } catch (IOException exception) {
             throw new Error("Unable to create build due to [" + exception.getMessage() + "]");
         }
@@ -63,7 +63,7 @@ public class AnglesReporter {
 
     public synchronized void storeArtifacts(Artifact[] artifacts) {
         try {
-            currentBuild = buildRequests.artifacts(currentBuild.getId(), artifacts);
+            currentBuild.set(buildRequests.artifacts(currentBuild.get().getId(), artifacts));
         } catch (IOException exception) {
             throw new Error("Unable to create build due to [" + exception.getMessage() + "]");
         }
@@ -72,7 +72,7 @@ public class AnglesReporter {
     public void startTest(String suiteName, String testName) {
         CreateExecution createExecution = new CreateExecution();
         createExecution.setStart(new Date());
-        createExecution.setBuild(currentBuild.getId());
+        createExecution.setBuild(currentBuild.get().getId());
         createExecution.setTitle(testName);
         createExecution.setSuite(suiteName);
         currentExecution.set(createExecution);
@@ -159,7 +159,7 @@ public class AnglesReporter {
 
     public CreateScreenshotResponse storeScreenshot(ScreenshotDetails details) {
         CreateScreenshot createScreenshot = new CreateScreenshot();
-        createScreenshot.setBuildId(currentBuild.getId());
+        createScreenshot.setBuildId(currentBuild.get().getId());
         createScreenshot.setTimestamp(new Date());
         createScreenshot.setView(details.getView());
         createScreenshot.setFilePath(details.getPath());
