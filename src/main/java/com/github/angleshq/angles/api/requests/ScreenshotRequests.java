@@ -30,7 +30,7 @@ public class ScreenshotRequests extends BaseRequests {
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
-    public CreateScreenshotResponse create(CreateScreenshot createScreenshot) throws IOException {
+    public Screenshot create(CreateScreenshot createScreenshot) throws IOException {
         File screenShotFile = new File(createScreenshot.getFilePath());
         String mimeType = tika.detect(screenShotFile);
         HttpEntity entity = MultipartEntityBuilder
@@ -46,7 +46,7 @@ public class ScreenshotRequests extends BaseRequests {
         CloseableHttpResponse response = sendMultiPartEntity(basePath, headers, entity);
         String responseBody = EntityUtils.toString(response.getEntity());
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
-            return gson.fromJson(responseBody, CreateScreenshotResponse.class);
+            return gson.fromJson(responseBody, Screenshot.class);
         } else {
             System.out.println(response.getStatusLine().getStatusCode() + ": " + responseBody);
         }
@@ -100,30 +100,5 @@ public class ScreenshotRequests extends BaseRequests {
             return gson.fromJson(responseBody, Screenshot.class);
         }
         return null;
-    }
-
-    public static void main(String[] args) throws IOException, URISyntaxException {
-        ScreenshotRequests requestsManager = new ScreenshotRequests("http://localhost:3000/rest/api/v1.0/");
-        CreateScreenshot request = new CreateScreenshot();
-        request.setBuildId("5f2506dbf72bc708e8a90667");
-        request.setView("jpj-home-screen");
-        request.setTimestamp(new Date());
-        request.setFilePath("/Users/sergio.barros/Desktop/Screenshot 2020-08-01 at 08.13.36.png");
-        CreateScreenshotResponse screenshot = requestsManager.create(request);
-        System.out.println(screenshot.getPath());
-
-        UpdateScreenshot update = new UpdateScreenshot();
-        Platform platform = new Platform();
-        platform.setPlatformName("Mac OSX");
-        platform.setBrowserName("Chrome");
-        platform.setBrowserVersion("83");
-        update.setPlatform(platform);
-        Screenshot updateResponse = requestsManager.update(screenshot.getId(), update);
-        System.out.println(updateResponse.getPlatform().getBrowserName());
-
-        Screenshot[] reponse = requestsManager.get(null, null, null, null);
-        for (Screenshot shot: reponse) {
-            System.out.println(shot.getPath());
-        }
     }
 }

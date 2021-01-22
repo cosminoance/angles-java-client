@@ -61,19 +61,15 @@ public class ExecutionRequests extends BaseRequests {
         return null;
     }
 
-    public ExecutionResponse platforms(String executionId, Platform platform) throws IOException {
-        Platform[] platforms = { platform };
-        return platforms(executionId, platforms);
-    }
-
-    public ExecutionResponse platforms(String executionId, Platform[] platforms) throws IOException {
+    public Execution platforms(String executionId, Platform... platforms) throws IOException {
         AddPlatforms addPlatformsRequest = new AddPlatforms();
         for (Platform platform: platforms) {  addPlatformsRequest.addPlatform(platform); }
         CloseableHttpResponse response = sendJSONPut(basePath + "/" + executionId + "/platforms", addPlatformsRequest);
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             String responseBody = EntityUtils.toString(response.getEntity());
-            return gson.fromJson(responseBody, ExecutionResponse.class);
+            return gson.fromJson(responseBody, Execution.class);
         }
         return null;
     }
+
 }

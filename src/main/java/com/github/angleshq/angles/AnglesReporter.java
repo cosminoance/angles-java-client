@@ -1,5 +1,7 @@
 package com.github.angleshq.angles;
 
+import com.github.angleshq.angles.api.exceptions.AnglesServerException;
+import com.github.angleshq.angles.api.models.Platform;
 import com.github.angleshq.angles.api.models.build.Artifact;
 import com.github.angleshq.angles.api.models.build.Build;
 import com.github.angleshq.angles.api.models.build.CreateBuild;
@@ -56,7 +58,7 @@ public class AnglesReporter {
         createBuild.setComponent(componentName);
         try {
             currentBuild.set(buildRequests.create(createBuild));
-        } catch (IOException exception) {
+        } catch (IOException | AnglesServerException exception) {
             throw new Error("Unable to create build due to [" + exception.getMessage() + "]");
         }
     }
@@ -64,8 +66,8 @@ public class AnglesReporter {
     public synchronized void storeArtifacts(Artifact[] artifacts) {
         try {
             currentBuild.set(buildRequests.artifacts(currentBuild.get().getId(), artifacts));
-        } catch (IOException exception) {
-            throw new Error("Unable to create build due to [" + exception.getMessage() + "]");
+        } catch (IOException | AnglesServerException exception) {
+            throw new Error("Unable to store build artifacts due to [" + exception.getMessage() + "]");
         }
     }
 
@@ -85,6 +87,10 @@ public class AnglesReporter {
         }  catch (IOException exception) {
             throw new Error("Unable to save/update test execution due to [" + exception.getMessage() + "]");
         }
+    }
+
+    public void storePlatformDetails(Platform... platform) {
+        currentExecution.get().addPlatform(platform);
     }
 
     public void startAction(String description) {
@@ -157,14 +163,14 @@ public class AnglesReporter {
         currentAction.get().addStep(step);
     }
 
-    public CreateScreenshotResponse storeScreenshot(ScreenshotDetails details) {
+    public Screenshot storeScreenshot(ScreenshotDetails details) {
         CreateScreenshot createScreenshot = new CreateScreenshot();
         createScreenshot.setBuildId(currentBuild.get().getId());
         createScreenshot.setTimestamp(new Date());
         createScreenshot.setView(details.getView());
         createScreenshot.setFilePath(details.getPath());
         try {
-            CreateScreenshotResponse response = screenshotRequests.create(createScreenshot);
+            Screenshot response = screenshotRequests.create(createScreenshot);
             // we need to store the platform details or tags
             storeScreenshotDetails(response.getId(), details);
             return response;

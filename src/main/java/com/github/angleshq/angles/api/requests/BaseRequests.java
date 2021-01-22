@@ -1,13 +1,17 @@
 package com.github.angleshq.angles.api.requests;
 
+import com.github.angleshq.angles.api.exceptions.AnglesServerException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -72,10 +76,25 @@ public abstract class BaseRequests {
     protected CloseableHttpResponse sendJSONPut(String path, Object message) throws IOException {
         HttpPut httpPut = new HttpPut(baseUrl.concat(path));
         StringEntity entity = new StringEntity(gson.toJson(message));
-        System.out.println(Thread.currentThread().getId() + " - PUT: " + gson.toJson(message));
         httpPut.setEntity(entity);
         httpPut.setHeader("Accept", "application/json");
         httpPut.setHeader("Content-type", "application/json");
         return client.execute(httpPut);
+    }
+
+    protected String getDefaultErrorMessage(CloseableHttpResponse response) {
+        String errorMessage = "";
+        try {
+            String bodyString =  EntityUtils.toString(response.getEntity());
+            JsonObject jsonResponse = gson.fromJson(bodyString, JsonObject.class);
+            errorMessage = jsonResponse.get("message").toString();
+        } catch (IOException exc) {
+            try {
+                errorMessage =  EntityUtils.toString(response.getEntity());
+            } catch (IOException exception) {
+                errorMessage = "Unable to extract error message from response due to [" + exception.getMessage() + "]";
+            }
+        }
+        return errorMessage;
     }
 }

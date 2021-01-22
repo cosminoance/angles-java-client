@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,8 @@ public class CreateExecution implements Serializable {
         this.actions.add(action);
     }
 
-    public void addPlatform(Platform platform) {
-        this.platforms.add(platform);
+    public void addPlatform(Platform... platform) {
+        this.platforms.clear();
+        this.platforms.addAll(Arrays.asList(platform));
     }
 }
