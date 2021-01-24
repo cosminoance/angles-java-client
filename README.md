@@ -9,6 +9,6 @@ Simply add the following dependency to your POM:
 <dependency>
   <groupId>com.github.angleshq</groupId>
   <artifactId>angles-java-client</artifactId>
-  <version>1.0.0-BETA3</version>
+  <version>1.0.0-BETA4</version>
 </dependency>
 ```
