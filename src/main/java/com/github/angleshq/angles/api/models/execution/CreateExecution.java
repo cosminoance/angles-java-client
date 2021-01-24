@@ -17,6 +17,7 @@ public class CreateExecution implements Serializable {
     private String build;
     private String title;
     private String suite;
+    private String feature;
     private List<String> tags = new ArrayList<>();
     private Date start;
     private List<Action> actions = new ArrayList<>();

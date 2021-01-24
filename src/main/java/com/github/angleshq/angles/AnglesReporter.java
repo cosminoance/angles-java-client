@@ -14,6 +14,7 @@ import com.github.angleshq.angles.api.requests.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AnglesReporter {
@@ -72,11 +73,21 @@ public class AnglesReporter {
     }
 
     public void startTest(String suiteName, String testName) {
+        startTest(suiteName, testName, null, null);
+    }
+
+    public void startTest(String suiteName, String testName, String feature) {
+        startTest(suiteName, testName, feature, null);
+    }
+
+    public void startTest(String suiteName, String testName, String feature, List<String> tags) {
         CreateExecution createExecution = new CreateExecution();
         createExecution.setStart(new Date());
         createExecution.setBuild(currentBuild.get().getId());
         createExecution.setTitle(testName);
         createExecution.setSuite(suiteName);
+        createExecution.setFeature(feature);
+        createExecution.setTags(tags);
         currentExecution.set(createExecution);
         currentAction.set(null);
     }
