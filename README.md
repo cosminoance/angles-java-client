@@ -12,3 +12,11 @@ Simply add the following dependency to your POM:
   <version>1.0.0-BETA4</version>
 </dependency>
 ```
+
+
+
+### Testng Listener
+Add the following to your base/test class:
+```
+@Listeners({AnglesTestngTestListener.class})
+```
