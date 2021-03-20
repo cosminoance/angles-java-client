@@ -7,7 +7,6 @@ import com.github.angleshq.angles.api.models.build.CreateBuild;
 import com.github.angleshq.angles.api.models.build.StoreArtifacts;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -23,12 +22,7 @@ public class BuildRequests extends BaseRequests {
 
     public Build create(CreateBuild createBuild) throws IOException, AnglesServerException {
         CloseableHttpResponse response = sendJSONPost(basePath, createBuild);
-        String responseBody = EntityUtils.toString(response.getEntity());
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
-            return gson.fromJson(responseBody, Build.class);
-        } else {
-            throw new AnglesServerException(getDefaultErrorMessage(response));
-        }
+        return processResponse(response, Build.class);
     }
 
     public Build[] get(String teamId, Integer limit, Integer skip) throws IOException, URISyntaxException, AnglesServerException {
@@ -37,22 +31,12 @@ public class BuildRequests extends BaseRequests {
         if (limit != null) { parameters.put("limit", limit); }
         if (skip != null) { parameters.put("skip", skip); }
         CloseableHttpResponse response = sendJSONGet(basePath, parameters);
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            String responseBody = EntityUtils.toString(response.getEntity());
-            return gson.fromJson(responseBody, Build[].class);
-        } else {
-            throw new AnglesServerException(getDefaultErrorMessage(response));
-        }
+        return processResponse(response, Build[].class);
     }
 
     public Build get(String buildId) throws IOException, AnglesServerException {
         CloseableHttpResponse response = sendJSONGet(basePath + "/" + buildId);
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            String responseBody = EntityUtils.toString(response.getEntity());
-            return gson.fromJson(responseBody, Build.class);
-        } else {
-            throw new AnglesServerException(getDefaultErrorMessage(response));
-        }
+        return processResponse(response, Build.class);
     }
 
     public Boolean delete(String buildId) throws IOException, AnglesServerException {
@@ -60,29 +44,20 @@ public class BuildRequests extends BaseRequests {
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             return true;
         } else {
-            throw new AnglesServerException(getDefaultErrorMessage(response));
+            processErrorResponse(response);
         }
+        return false;
     }
 
     public Build update(Build build) throws IOException, AnglesServerException {
         CloseableHttpResponse response = sendJSONPut(basePath + "/" + build.getId(), build);
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            String responseBody = EntityUtils.toString(response.getEntity());
-            return gson.fromJson(responseBody, Build.class);
-        } else {
-            throw new AnglesServerException(getDefaultErrorMessage(response));
-        }
+        return processResponse(response, Build.class);
     }
 
     public Build keep(String buildId, Boolean keep) throws IOException, AnglesServerException {
         String request = "{ \"keep\": " + keep + " }";
         CloseableHttpResponse response = sendJSONPut(basePath + "/" + buildId + "/keep", request);
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            String responseBody = EntityUtils.toString(response.getEntity());
-            return gson.fromJson(responseBody, Build.class);
-        } else {
-            throw new AnglesServerException(getDefaultErrorMessage(response));
-        }
+        return processResponse(response, Build.class);
     }
 
     public Build artifacts(String buildId, Artifact artifact) throws IOException, AnglesServerException {
@@ -94,12 +69,7 @@ public class BuildRequests extends BaseRequests {
         StoreArtifacts request = new StoreArtifacts();
         request.setArtifacts(artifacts);
         CloseableHttpResponse response = sendJSONPut(basePath + "/" + buildId + "/artifacts", request);
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            String responseBody = EntityUtils.toString(response.getEntity());
-            return gson.fromJson(responseBody, Build.class);
-        } else {
-            throw new AnglesServerException(getDefaultErrorMessage(response));
-        }
+        return processResponse(response, Build.class);
     }
 
 }

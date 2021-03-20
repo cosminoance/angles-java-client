@@ -1,5 +1,7 @@
 package com.github.angleshq.angles.api.requests;
 
+import com.github.angleshq.angles.api.exceptions.AnglesServerException;
+import com.github.angleshq.angles.api.models.Environment;
 import com.github.angleshq.angles.api.models.Platform;
 import com.github.angleshq.angles.api.models.execution.*;
 import org.apache.http.HttpStatus;
@@ -15,61 +17,41 @@ public class ExecutionRequests extends BaseRequests {
         super(baseUrl);
     }
 
-    public Execution create(CreateExecution createExecution) throws IOException {
+    public Execution create(CreateExecution createExecution) throws IOException, AnglesServerException {
         CloseableHttpResponse response = sendJSONPost(basePath, createExecution);
-        String responseBody = EntityUtils.toString(response.getEntity());
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
-            return gson.fromJson(responseBody, Execution.class);
-        } else {
-            System.out.println(response.getStatusLine().getStatusCode() + ": " + responseBody);
-        }
-        return null;
+        return processResponse(response, Execution.class);
     }
 
-    public Execution[] get() throws IOException {
+    public Execution[] get() throws IOException, AnglesServerException {
         CloseableHttpResponse response = sendJSONGet(basePath);
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            String responseBody = EntityUtils.toString(response.getEntity());
-            return gson.fromJson(responseBody, Execution[].class);
-        }
-        return null;
+        return processResponse(response, Execution[].class);
     }
 
-    public Execution get(String executionId) throws IOException {
+    public Execution get(String executionId) throws IOException, AnglesServerException {
         CloseableHttpResponse response = sendJSONGet(basePath + "/" + executionId);
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            String responseBody = EntityUtils.toString(response.getEntity());
-            return gson.fromJson(responseBody, Execution.class);
-        }
-        return null;
+        return processResponse(response, Execution.class);
     }
 
-    public Boolean delete(String executionId) throws IOException {
+    public Boolean delete(String executionId) throws IOException, AnglesServerException {
         CloseableHttpResponse response = sendDelete(basePath + "/" + executionId);
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             return true;
+        } else {
+            processErrorResponse(response);
         }
         return false;
     }
 
-    public Execution update(Execution execution) throws IOException {
+    public Execution update(Execution execution) throws IOException, AnglesServerException {
         CloseableHttpResponse response = sendJSONPut(basePath + "/" + execution.getId(), execution);
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            String responseBody = EntityUtils.toString(response.getEntity());
-            return gson.fromJson(responseBody, Execution.class);
-        }
-        return null;
+        return processResponse(response, Execution.class);
     }
 
-    public Execution platforms(String executionId, Platform... platforms) throws IOException {
+    public Execution platforms(String executionId, Platform... platforms) throws IOException, AnglesServerException {
         AddPlatforms addPlatformsRequest = new AddPlatforms();
         for (Platform platform: platforms) {  addPlatformsRequest.addPlatform(platform); }
         CloseableHttpResponse response = sendJSONPut(basePath + "/" + executionId + "/platforms", addPlatformsRequest);
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            String responseBody = EntityUtils.toString(response.getEntity());
-            return gson.fromJson(responseBody, Execution.class);
-        }
-        return null;
+        return processResponse(response, Execution.class);
     }
 
 }

@@ -97,4 +97,28 @@ public abstract class BaseRequests {
         }
         return errorMessage;
     }
+
+    protected <T> T processResponse(CloseableHttpResponse response, Class<T> responseClass) throws IOException, AnglesServerException {
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK ||
+                response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
+            String responseBody = EntityUtils.toString(response.getEntity());
+            return gson.fromJson(responseBody, responseClass);
+        } else {
+            processErrorResponse(response);
+        }
+        return null;
+    }
+
+    protected void processErrorResponse(CloseableHttpResponse response) throws AnglesServerException {
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+            throw new AnglesServerException(404, getDefaultErrorMessage(response));
+        } else if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CONFLICT) {
+            throw new AnglesServerException(409, getDefaultErrorMessage(response));
+        } else if (response.getStatusLine().getStatusCode() == HttpStatus.SC_UNPROCESSABLE_ENTITY) {
+            throw new AnglesServerException(422, getDefaultErrorMessage(response));
+        } else {
+            throw new AnglesServerException(500, getDefaultErrorMessage(response));
+        }
+    }
+
 }

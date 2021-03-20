@@ -95,7 +95,7 @@ public class AnglesReporter {
     public void saveTest() {
         try {
             executionRequests.create(currentExecution.get());
-        }  catch (IOException exception) {
+        }  catch (IOException | AnglesServerException exception) {
             throw new Error("Unable to save/update test execution due to [" + exception.getMessage() + "]");
         }
     }
@@ -185,7 +185,7 @@ public class AnglesReporter {
             // we need to store the platform details or tags
             storeScreenshotDetails(response.getId(), details);
             return response;
-        } catch (IOException exception) {
+        } catch (IOException | AnglesServerException exception) {
             throw new Error("Unable store screenshot due to [" + exception.getMessage() + "]");
         }
     }
@@ -195,7 +195,15 @@ public class AnglesReporter {
             return screenshotRequests.baselineCompare(screenshotId);
         } catch (IOException exception) {
             throw new Error("Unable compare screenshot with baseline due to [" + exception.getMessage() + "]");
+        } catch (AnglesServerException exception) {
+            if (exception.getHttpStatusCode().equals(404) && exception.getMessage().contains("No baselines")) {
+                // if baseline not set
+                info("Unable to compare screenshot [" + screenshotId + "] against baseline as it has not been set. Please set a baseline using the Angles UI.");
+            } else {
+                throw new Error("Unable compare screenshot with baseline due to [" + exception.getMessage() + "]");
+            }
         }
+        return null;
     }
 
     private void storeScreenshotDetails(String screenshotId, ScreenshotDetails details) {
@@ -205,7 +213,7 @@ public class AnglesReporter {
             if (details.getTags() != null) updateScreenshot.setTags(details.getTags());
             try {
                 screenshotRequests.update(screenshotId, updateScreenshot);
-            } catch (IOException exception) {
+            } catch (IOException | AnglesServerException exception) {
                 throw new Error("Unable update screenshot due to [" + exception.getMessage() + "]");
             }
         }

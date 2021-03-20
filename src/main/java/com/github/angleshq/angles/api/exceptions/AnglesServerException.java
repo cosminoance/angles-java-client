@@ -1,8 +1,12 @@
 package com.github.angleshq.angles.api.exceptions;
 
+import lombok.Getter;
+@Getter
 public class AnglesServerException extends Exception {
 
-    public AnglesServerException(String errorMessage) {
+    private Integer httpStatusCode;
+    public AnglesServerException(Integer httpStatusCode, String errorMessage) {
         super(errorMessage);
+        this.httpStatusCode = httpStatusCode;
     }
 }
