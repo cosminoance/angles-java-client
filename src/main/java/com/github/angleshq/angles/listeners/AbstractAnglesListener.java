@@ -49,7 +49,7 @@ public class AbstractAnglesListener {
         anglesReporter.saveTest();
     }
 
-    protected String getAnglesPropertyFromSystem(String property) throws AnglesPropertyNotGivenException {
+    public static String getAnglesPropertyFromSystem(String property) throws AnglesPropertyNotGivenException {
         String propertyValue = System.getProperty(property);
         if(isBlank(propertyValue)) {
             throw new AnglesPropertyNotGivenException("Detected that property [" + property + "] was not given. Please add this mandatory property as a system property");

@@ -31,10 +31,10 @@ Please also ensure you set the following system variables:
 </systemPropertyVariables>
 ```
 
-### JUnit5 Listener
+### JUnit5 Extension
 Add the following to your base/test class:
 ```
-@ExtendWith(AnglesJUnit5TestListener.class)
+@ExtendWith(AnglesJUnit5TestExtension.class)
 ```
 Please also ensure you set the following system variables:
 ```
@@ -46,3 +46,21 @@ Please also ensure you set the following system variables:
     <angles.environment>SampleEnvironmentName</angles.environment>
 </systemPropertyVariables>
 ```
+
+
+### Log4j2 Appender
+Add the appender to your log4j2 configuration file:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" packages="com.github.angleshq.angles.listeners.log4j2.AnglesLog4j2LogAppender">
+    <Appenders>
+        <AnglesLog4j2LogAppender name="AnglesLog4j2LogAppender"/>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="AnglesLog4j2LogAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>
+```
+Please bear in mind that this appender standalone will not be able to push logs to your Angles Dashboard and requires this to be coupled with a test execution framework like JUnit5 or Testng. i.e. This plugin will not create new runs/builds.
