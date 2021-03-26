@@ -20,3 +20,29 @@ Add the following to your base/test class:
 ```
 @Listeners({AnglesTestngTestListener.class})
 ```
+Please also ensure you set the following system variables:
+```
+<systemPropertyVariables>
+    <angles.url>http://127.0.0.1:3000</angles.url>
+    <angles.runName>SampleRunName</angles.runName>
+    <angles.team>SampleTeamName</angles.team>
+    <angles.component>SampleComponent</angles.component>
+    <angles.environment>SampleEnvironmentName</angles.environment>
+</systemPropertyVariables>
+```
+
+### JUnit5 Listener
+Add the following to your base/test class:
+```
+@ExtendWith(AnglesJUnit5TestListener.class)
+```
+Please also ensure you set the following system variables:
+```
+<systemPropertyVariables>
+    <angles.url>http://127.0.0.1:3000</angles.url>
+    <angles.runName>SampleRunName</angles.runName>
+    <angles.team>SampleTeamName</angles.team>
+    <angles.component>SampleComponent</angles.component>
+    <angles.environment>SampleEnvironmentName</angles.environment>
+</systemPropertyVariables>
+```
