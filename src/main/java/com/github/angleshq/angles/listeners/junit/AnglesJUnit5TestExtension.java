@@ -8,10 +8,10 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-public class AnglesJUnit5TestListener extends AbstractAnglesListener implements BeforeAllCallback, BeforeEachCallback,
+public class AnglesJUnit5TestExtension extends AbstractAnglesListener implements BeforeAllCallback, BeforeEachCallback,
          AfterEachCallback, AfterAllCallback {
 
-    public AnglesJUnit5TestListener() throws AnglesPropertyNotGivenException {
+    public AnglesJUnit5TestExtension() throws AnglesPropertyNotGivenException {
         initialiseAnglesTestParameters();
     }
 
@@ -22,6 +22,7 @@ public class AnglesJUnit5TestListener extends AbstractAnglesListener implements 
 
     @Override
     public void afterAll(ExtensionContext extensionContext) throws Exception {
+
     }
 
     @Override
