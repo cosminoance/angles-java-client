@@ -42,6 +42,17 @@ public abstract class AbstractAnglesTestCase {
         return propertyValue;
     }
 
+    protected void startAnglesTest(String suiteName, String methodName) {
+        if(methodCount.containsKey(getUniqueTestName(suiteName, methodName))) {
+            Integer count = methodCount.get(getUniqueTestName(suiteName, methodName)) + 1;
+            anglesReporter.startTest(suiteName, methodName + " [" + count + "]");
+            methodCount.put(getUniqueTestName(suiteName, methodName), count);
+        } else {
+            anglesReporter.startTest(suiteName, methodName);
+            methodCount.put(getUniqueTestName(suiteName, methodName), 1);
+        }
+    }
+
     protected String getUniqueTestName(String suiteName, String methodName) {
         return suiteName + "_" + methodName;
     }

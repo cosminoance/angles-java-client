@@ -12,14 +12,7 @@ public class AnglesTestngBaseTest extends AbstractAnglesTestCase {
     public void anglesBeforeMethod(Method method) {
         String suiteName = method.getDeclaringClass().getSimpleName();
         String methodName = method.getName();
-        if(methodCount.containsKey(getUniqueTestName(suiteName, methodName))) {
-            Integer count = methodCount.get(getUniqueTestName(suiteName, methodName)) + 1;
-            anglesReporter.startTest(suiteName, methodName + " [" + count + "]");
-            methodCount.put(getUniqueTestName(suiteName, methodName), count);
-        } else {
-            anglesReporter.startTest(suiteName, methodName);
-            methodCount.put(getUniqueTestName(suiteName, methodName), 1);
-        }
+        startAnglesTest(suiteName, methodName);
     }
 
     @AfterMethod(alwaysRun = true)
