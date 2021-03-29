@@ -3,9 +3,6 @@ package com.github.angleshq.angles.abstracttest;
 import com.github.angleshq.angles.AnglesReporter;
 import com.github.angleshq.angles.exceptions.AnglesPropertyNotGivenException;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import static com.github.angleshq.angles.util.AnglesUtils.getAnglesPropertyFromSystem;
 
 public abstract class AbstractAnglesTestCase {
@@ -15,7 +12,6 @@ public abstract class AbstractAnglesTestCase {
     protected String team;
     protected String component;
     protected String environment;
-    protected static Map<String, Integer> methodCount = new ConcurrentHashMap<>();
 
     protected AbstractAnglesTestCase() {
         try {
@@ -32,17 +28,6 @@ public abstract class AbstractAnglesTestCase {
         team = getAnglesPropertyFromSystem("angles.team");
         component = getAnglesPropertyFromSystem("angles.component");
         environment = getAnglesPropertyFromSystem("angles.environment");
-    }
-
-    protected void startAnglesTest(String suiteName, String methodName) {
-        if(methodCount.containsKey(getUniqueTestName(suiteName, methodName))) {
-            Integer count = methodCount.get(getUniqueTestName(suiteName, methodName)) + 1;
-            anglesReporter.startTest(suiteName, methodName + " [" + count + "]");
-            methodCount.put(getUniqueTestName(suiteName, methodName), count);
-        } else {
-            anglesReporter.startTest(suiteName, methodName);
-            methodCount.put(getUniqueTestName(suiteName, methodName), 1);
-        }
     }
 
     protected String getUniqueTestName(String suiteName, String methodName) {

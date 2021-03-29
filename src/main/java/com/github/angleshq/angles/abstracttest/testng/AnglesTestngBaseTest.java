@@ -12,7 +12,7 @@ public class AnglesTestngBaseTest extends AbstractAnglesTestCase {
     public void anglesBeforeMethod(Method method) {
         String suiteName = method.getDeclaringClass().getSimpleName();
         String methodName = method.getName();
-        startAnglesTest(suiteName, methodName);
+        anglesReporter.startTest(suiteName, methodName);
     }
 
     @AfterMethod(alwaysRun = true)
