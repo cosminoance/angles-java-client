@@ -22,20 +22,12 @@ import static com.github.angleshq.angles.util.AnglesUtils.getAnglesPropertyFromS
 public class AnglesLog4j2LogAppender extends AbstractAppender {
 
     protected AnglesReporter anglesReporter;
-    protected String runName;
-    protected String team;
-    protected String component;
-    protected String environment;
 
     protected AnglesLog4j2LogAppender(String name, Filter filter, Layout<? extends Serializable> layout,
                                       boolean ignoreExceptions, Property[] properties)
                                         throws AnglesPropertyNotGivenException {
         super(name, filter, layout, ignoreExceptions, properties);
         anglesReporter = AnglesReporter.getInstance(getAnglesPropertyFromSystem("angles.url") + "/rest/api/v1.0/");
-        runName = getAnglesPropertyFromSystem("angles.runName");
-        team = getAnglesPropertyFromSystem("angles.team");
-        component = getAnglesPropertyFromSystem("angles.component");
-        environment = getAnglesPropertyFromSystem("angles.environment");
     }
 
     @PluginFactory
