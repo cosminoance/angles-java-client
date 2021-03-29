@@ -16,7 +16,7 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 
 import java.io.Serializable;
 
-import static com.github.angleshq.angles.listeners.AbstractAnglesListener.getAnglesPropertyFromSystem;
+import static com.github.angleshq.angles.util.AnglesUtils.getAnglesPropertyFromSystem;
 
 @Plugin(name = "AnglesLog4j2LogAppender", category = "Core", elementType = Appender.ELEMENT_TYPE)
 public class AnglesLog4j2LogAppender extends AbstractAppender {
@@ -36,8 +36,6 @@ public class AnglesLog4j2LogAppender extends AbstractAppender {
         team = getAnglesPropertyFromSystem("angles.team");
         component = getAnglesPropertyFromSystem("angles.component");
         environment = getAnglesPropertyFromSystem("angles.environment");
-        // This is called before anything else, so would prevent any null pointer issues.
-        anglesReporter.startBuild(runName, environment, team, component);
     }
 
     @PluginFactory

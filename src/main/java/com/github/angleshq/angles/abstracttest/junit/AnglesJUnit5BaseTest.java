@@ -16,10 +16,6 @@ public class AnglesJUnit5BaseTest extends AbstractAnglesTestCase {
 
     @AfterEach
     public void anglesAfterEach(TestInfo info) {
-        System.out.println(info.getDisplayName());
-        String suiteName = info.getTestClass().get().getSimpleName();
-        String methodName = info.getTestMethod().get().getName();
-        System.out.println("afterEach: [" + getUniqueTestName(suiteName, methodName) + "]");
         anglesReporter.saveTest();
     }
 }

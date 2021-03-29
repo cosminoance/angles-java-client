@@ -6,7 +6,7 @@ import com.github.angleshq.angles.exceptions.AnglesPropertyNotGivenException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import static com.github.angleshq.angles.util.AnglesUtils.getAnglesPropertyFromSystem;
 
 public abstract class AbstractAnglesTestCase {
 
@@ -32,14 +32,6 @@ public abstract class AbstractAnglesTestCase {
         team = getAnglesPropertyFromSystem("angles.team");
         component = getAnglesPropertyFromSystem("angles.component");
         environment = getAnglesPropertyFromSystem("angles.environment");
-    }
-
-    protected static String getAnglesPropertyFromSystem(String property) throws AnglesPropertyNotGivenException {
-        String propertyValue = System.getProperty(property);
-        if(isBlank(propertyValue)) {
-            throw new AnglesPropertyNotGivenException("Detected that property [" + property + "] was not given. Please add this mandatory property as a system property");
-        }
-        return propertyValue;
     }
 
     protected void startAnglesTest(String suiteName, String methodName) {
