@@ -15,10 +15,10 @@ Simply add the following dependency to your POM:
 
 
 
-### Testng Listener
-Add the following to your base/test class:
+### Testng
+Extend your base/test class with:
 ```
-@Listeners({AnglesTestngTestListener.class})
+AnglesTestngBaseTest
 ```
 Please also ensure you set the following system variables:
 ```
@@ -31,10 +31,10 @@ Please also ensure you set the following system variables:
 </systemPropertyVariables>
 ```
 
-### JUnit5 Extension
-Add the following to your base/test class:
+### JUnit5
+Extend your base/test class with:
 ```
-@ExtendWith(AnglesJUnit5TestExtension.class)
+AnglesJUnit5BaseTest
 ```
 Please also ensure you set the following system variables:
 ```

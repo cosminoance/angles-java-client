@@ -77,6 +77,10 @@ public class AnglesReporter {
         startTest(suiteName, testName, null, null);
     }
 
+    public void updateTestName(String testName) {
+        currentExecution.get().setTitle(testName);
+    }
+
     public void startTest(String suiteName, String testName, String feature) {
         startTest(suiteName, testName, feature, null);
     }
