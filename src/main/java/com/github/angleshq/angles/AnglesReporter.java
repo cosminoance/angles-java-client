@@ -31,6 +31,7 @@ public class AnglesReporter {
     private InheritableThreadLocal<Build> currentBuild = new InheritableThreadLocal<>();
     private InheritableThreadLocal<CreateExecution> currentExecution = new InheritableThreadLocal<>();
     private InheritableThreadLocal<Action> currentAction = new InheritableThreadLocal<>();
+    private ThreadLocal<Action> setUpAction = new InheritableThreadLocal<>();
 
     public static AnglesReporter getInstance(String url) {
         if (!reporterMap.containsKey(url)) {
@@ -89,12 +90,18 @@ public class AnglesReporter {
         createExecution.setFeature(feature);
         createExecution.setTags(tags);
         currentExecution.set(createExecution);
+        if (setUpAction.get() != null) {
+            // TODO: handle suite setup
+            // currentExecution.get().addAction(setUpAction.get());
+            setUpAction.set(null);
+        }
         currentAction.set(null);
     }
 
     public void saveTest() {
         try {
             executionRequests.create(currentExecution.get());
+            currentExecution.set(null);
         }  catch (IOException | AnglesServerException exception) {
             throw new Error("Unable to save/update test execution due to [" + exception.getMessage() + "]");
         }
@@ -105,10 +112,6 @@ public class AnglesReporter {
     }
 
     public void startAction(String description) {
-        if (this.currentExecution.get() == null) {
-            //if no test has been created assume it's the setup
-            this.startTest("Set-up", "Set-up");
-        }
         this.currentAction.set(new Action(description));
         this.currentExecution.get().getActions().add(this.currentAction.get());
     }
@@ -158,9 +161,6 @@ public class AnglesReporter {
     }
 
     private void addStep(String name, String expected, String actual, String info, StepStatus status, String screenshotId) {
-        if (currentAction.get() == null) {
-            startAction(DEFAULT_ACTION_NAME);
-        }
         Step step = new Step();
         step.setTimestamp(new Date());
         step.setStatus(status);
@@ -171,7 +171,20 @@ public class AnglesReporter {
         if (screenshotId !=null) {
             step.setScreenshot(screenshotId);
         }
-        currentAction.get().addStep(step);
+        // scenarios, 1. pre logs, 2. no action
+        if (currentExecution.get() == null) {
+            // test hasn't started yet (or maybe it has finished).
+            if (setUpAction.get() == null) {
+                this.setUpAction.set(new Action("Test-Setup"));
+            }
+            setUpAction.get().addStep(step);
+        } else {
+            // test has started
+            if (currentAction.get() == null) {
+                startAction(DEFAULT_ACTION_NAME);
+            }
+            currentAction.get().addStep(step);
+        }
     }
 
     public Screenshot storeScreenshot(ScreenshotDetails details) {

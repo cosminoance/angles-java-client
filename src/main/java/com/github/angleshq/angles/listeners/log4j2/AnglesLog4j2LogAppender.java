@@ -36,6 +36,8 @@ public class AnglesLog4j2LogAppender extends AbstractAppender {
         team = getAnglesPropertyFromSystem("angles.team");
         component = getAnglesPropertyFromSystem("angles.component");
         environment = getAnglesPropertyFromSystem("angles.environment");
+        // This is called before anything else, so would prevent any null pointer issues.
+        anglesReporter.startBuild(runName, environment, team, component);
     }
 
     @PluginFactory
