@@ -16,7 +16,7 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 
 import java.io.Serializable;
 
-import static com.github.angleshq.angles.util.AnglesUtils.getAnglesPropertyFromSystem;
+import static com.github.angleshq.angles.util.AnglesReporterUtils.getAnglesPropertyFromSystem;
 
 @Plugin(name = "AnglesLog4j2LogAppender", category = "Core", elementType = Appender.ELEMENT_TYPE)
 public class AnglesLog4j2LogAppender extends AbstractAppender {
