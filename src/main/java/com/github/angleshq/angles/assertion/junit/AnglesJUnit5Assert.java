@@ -4,10 +4,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.platform.commons.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+import static com.github.angleshq.angles.assertion.AssertHelper.anglesAssertGreaterThan;
+import static com.github.angleshq.angles.assertion.AssertHelper.anglesAssertLessThan;
 import static com.github.angleshq.angles.util.AnglesReporterUtils.getAnglesReporter;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
@@ -1268,75 +1269,35 @@ public class AnglesJUnit5Assert {
     }
 
     public void assertGreaterThan(Double value1, Double value2) {
-        BigDecimal a = new BigDecimal(value1.toString());
-        BigDecimal b = new BigDecimal(value2.toString());
-        boolean comparison = a.compareTo(b) == 1;
-        handleAssertEquals("AssertGreaterThan (Double)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
-        Assertions.assertEquals(true, comparison);
+        Assertions.assertEquals(true, anglesAssertGreaterThan(value1, value2));
     }
 
     public void assertLessThan(Double value1, Double value2) {
-        BigDecimal a = new BigDecimal(value1.toString());
-        BigDecimal b = new BigDecimal(value2.toString());
-        boolean comparison = a.compareTo(b) == -1;
-        handleAssertEquals("AssertLessThan (Double)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
-        Assertions.assertEquals(true, comparison);
+        Assertions.assertEquals(true, anglesAssertLessThan(value1, value2));
     }
 
     public void assertGreaterThan(Integer value1, Integer value2) {
-        BigDecimal a = new BigDecimal(value1.toString());
-        BigDecimal b = new BigDecimal(value2.toString());
-        boolean comparison = a.compareTo(b) == 1;
-        handleAssertEquals("AssertGreaterThan (Integer)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
-        Assertions.assertEquals(true, comparison);
+        Assertions.assertEquals(true, anglesAssertGreaterThan(value1, value2));
     }
 
     public void assertLessThan(Integer value1, Integer value2) {
-        BigDecimal a = new BigDecimal(value1.toString());
-        BigDecimal b = new BigDecimal(value2.toString());
-        boolean comparison = a.compareTo(b) == -1;
-        handleAssertEquals("AssertLessThan (Integer)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
-        Assertions.assertEquals(true, comparison);
+        Assertions.assertEquals(true, anglesAssertLessThan(value1, value2));
     }
 
     public void assertGreaterThan(Float value1, Float value2) {
-        BigDecimal a = new BigDecimal(value1.toString());
-        BigDecimal b = new BigDecimal(value2.toString());
-        boolean comparison = a.compareTo(b) == 1;
-        handleAssertEquals("AssertGreaterThan (Float)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
-        Assertions.assertEquals(true, comparison);
+        Assertions.assertEquals(true, anglesAssertGreaterThan(value1, value2));
     }
 
     public void assertLessThan(Float value1, Float value2) {
-        BigDecimal a = new BigDecimal(value1.toString());
-        BigDecimal b = new BigDecimal(value2.toString());
-        boolean comparison = a.compareTo(b) == -1;
-        handleAssertEquals("AssertLessThan (Float)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
-        Assertions.assertEquals(true, comparison);
+        Assertions.assertEquals(true, anglesAssertLessThan(value1, value2));
     }
 
     public void assertGreaterThan(String value1, String value2) {
-        BigDecimal a = new BigDecimal(value1);
-        BigDecimal b = new BigDecimal(value2);
-        boolean comparison = a.compareTo(b) == 1;
-        handleAssertEquals("AssertGreaterThan (String)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
-        Assertions.assertEquals(true, comparison);
+        Assertions.assertEquals(true, anglesAssertGreaterThan(value1, value2));
     }
 
     public void assertLessThan(String value1, String value2) {
-        BigDecimal a = new BigDecimal(value1);
-        BigDecimal b = new BigDecimal(value2);
-        boolean comparison = a.compareTo(b) == -1;
-        handleAssertEquals("AssertLessThan (String)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
-        Assertions.assertEquals(true, comparison);
+        Assertions.assertEquals(true, anglesAssertLessThan(value1, value2));
     }
 
     private void handleDoesNotThrow(String step, Executable executable) {
@@ -1347,11 +1308,11 @@ public class AnglesJUnit5Assert {
         try {
             executable.execute();
         } catch(Throwable e) {
-            anglesReporterFail(step, "No Exception thrown",
+            getAnglesReporter().fail(step, "No Exception thrown",
                     e.getClass().getSimpleName() + " : " + e.getMessage(), details);
             return;
         }
-        anglesReporterPass(step, "No Exception thrown", "No Exception thrown", details);
+        getAnglesReporter().pass(step, "No Exception thrown", "No Exception thrown", details);
     }
 
     private void handleAssertSame(String step, Object expected, Object actual) {
@@ -1360,9 +1321,9 @@ public class AnglesJUnit5Assert {
 
     private void handleAssertSame(String step, Object expected, Object actual, String details) {
         if(expected == actual) {
-            anglesReporterPass(step, expected, actual, details);
+            getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
         } else {
-            anglesReporterFail(step, expected, actual, details);
+            getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
         }
     }
 
@@ -1372,9 +1333,9 @@ public class AnglesJUnit5Assert {
 
     private void handleAssertNotSame(String step, Object expected, Object actual, String details) {
         if(expected != actual) {
-            anglesReporterPass(step, expected, actual, details);
+            getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
         } else {
-            anglesReporterFail(step, expected, actual, details);
+            getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
         }
     }
 
@@ -1384,9 +1345,9 @@ public class AnglesJUnit5Assert {
 
     private void handleAssertEquals(String step, Object expected, Object actual, String details) {
         if(expected.equals(actual)) {
-            anglesReporterPass(step, expected, actual, details);
+            getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
         } else {
-            anglesReporterFail(step, expected, actual, details);
+            getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
         }
     }
 
@@ -1396,18 +1357,10 @@ public class AnglesJUnit5Assert {
 
     private void handleAssertNotEquals(String step, Object expected, Object actual, String details) {
         if(!expected.equals(actual)) {
-            anglesReporterPass(step, expected, actual, details);
+            getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
         } else {
-            anglesReporterFail(step, expected, actual, details);
+            getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
         }
-    }
-
-    private void anglesReporterPass(String step, Object expected, Object actual, String details) {
-        getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
-    }
-
-    private void anglesReporterFail(String step, Object expected, Object actual, String details) {
-        getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
     }
 
     private String buildPrefix(String message) {
