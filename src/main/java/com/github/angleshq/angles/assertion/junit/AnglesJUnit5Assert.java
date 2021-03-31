@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.platform.commons.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
@@ -483,18 +484,6 @@ public class AnglesJUnit5Assert {
         handleAssertEquals("AssertEquals (Float/Float)", expected, actual, buildPrefix(nullSafeGet(messageSupplier)));
         Assertions.assertEquals(expected, actual, messageSupplier);
     }
-//
-//    public void assertEquals(float expected, float actual, float delta) {
-//        Assertions.assertEquals(expected, actual, delta);
-//    }
-//
-//    public void assertEquals(float expected, float actual, float delta, String message) {
-//        Assertions.assertEquals(expected, actual, delta, message);
-//    }
-//
-//    public void assertEquals(float expected, float actual, float delta, Supplier<String> messageSupplier) {
-//        Assertions.assertEquals(expected, actual, delta, messageSupplier);
-//    }
 
     public void assertEquals(double expected, double actual) {
         handleAssertEquals("AssertEquals (double/double)", expected, actual);
@@ -555,18 +544,6 @@ public class AnglesJUnit5Assert {
         handleAssertEquals("AssertEquals (Double/Double)", expected, actual, buildPrefix(nullSafeGet(messageSupplier)));
         Assertions.assertEquals(expected, actual, messageSupplier);
     }
-
-//    public void assertEquals(double expected, double actual, double delta) {
-//        Assertions.assertEquals(expected, actual, delta);
-//    }
-//
-//    public void assertEquals(double expected, double actual, double delta, String message) {
-//        Assertions.assertEquals(expected, actual, delta, message);
-//    }
-//
-//    public void assertEquals(double expected, double actual, double delta, Supplier<String> messageSupplier) {
-//        Assertions.assertEquals(expected, actual, delta, messageSupplier);
-//    }
 
     public void assertEquals(char expected, char actual) {
         handleAssertEquals("AssertEquals (char/char)", expected, actual);
@@ -749,18 +726,6 @@ public class AnglesJUnit5Assert {
         Assertions.assertArrayEquals(expected, actual, messageSupplier);
     }
 
-//    public void assertArrayEquals(float[] expected, float[] actual, float delta) {
-//        Assertions.assertArrayEquals(expected, actual, delta);
-//    }
-//
-//    public void assertArrayEquals(float[] expected, float[] actual, float delta, String message) {
-//        Assertions.assertArrayEquals(expected, actual, delta, message);
-//    }
-//
-//    public void assertArrayEquals(float[] expected, float[] actual, float delta, Supplier<String> messageSupplier) {
-//        Assertions.assertArrayEquals(expected, actual, delta, messageSupplier);
-//    }
-
     public void assertArrayEquals(double[] expected, double[] actual) {
         handleAssertEquals("AssertEquals (double[]/double[])", expected, actual);
         Assertions.assertArrayEquals(expected, actual);
@@ -776,18 +741,6 @@ public class AnglesJUnit5Assert {
         Assertions.assertArrayEquals(expected, actual, messageSupplier);
     }
 
-//    public void assertArrayEquals(double[] expected, double[] actual, double delta) {
-//        Assertions.assertArrayEquals(expected, actual, delta);
-//    }
-//
-//    public void assertArrayEquals(double[] expected, double[] actual, double delta, String message) {
-//        Assertions.assertArrayEquals(expected, actual, delta, message);
-//    }
-//
-//    public void assertArrayEquals(double[] expected, double[] actual, double delta, Supplier<String> messageSupplier) {
-//        Assertions.assertArrayEquals(expected, actual, delta, messageSupplier);
-//    }
-
     public void assertArrayEquals(Object[] expected, Object[] actual) {
         handleAssertEquals("AssertEquals (Object[]/Object[])", expected, actual);
         Assertions.assertArrayEquals(expected, actual);
@@ -802,43 +755,7 @@ public class AnglesJUnit5Assert {
         handleAssertEquals("AssertEquals (Object[]/Object[])", expected, actual, buildPrefix(nullSafeGet(messageSupplier)));
         Assertions.assertArrayEquals(expected, actual, messageSupplier);
     }
-//
-//    public void assertIterableEquals(Iterable<?> expected, Iterable<?> actual) {
-//        Assertions.assertIterableEquals(expected, actual);
-//    }
-//
-//    public void assertIterableEquals(Iterable<?> expected, Iterable<?> actual, String message) {
-//        Assertions.assertIterableEquals(expected, actual, message);
-//    }
-//
-//    public void assertIterableEquals(Iterable<?> expected, Iterable<?> actual, Supplier<String> messageSupplier) {
-//        Assertions.assertIterableEquals(expected, actual, messageSupplier);
-//    }
-//
-//    public void assertLinesMatch(List<String> expectedLines, List<String> actualLines) {
-//        Assertions.assertLinesMatch(expectedLines, actualLines);
-//    }
-//
-//    public void assertLinesMatch(List<String> expectedLines, List<String> actualLines, String message) {
-//        Assertions.assertLinesMatch(expectedLines, actualLines, message);
-//    }
-//
-//    public void assertLinesMatch(List<String> expectedLines, List<String> actualLines, Supplier<String> messageSupplier) {
-//        Assertions.assertLinesMatch(expectedLines, actualLines, messageSupplier);
-//    }
-//
-//    public void assertLinesMatch(Stream<String> expectedLines, Stream<String> actualLines) {
-//        Assertions.assertLinesMatch(expectedLines, actualLines);
-//    }
-//
-//    public void assertLinesMatch(Stream<String> expectedLines, Stream<String> actualLines, String message) {
-//        Assertions.assertLinesMatch(expectedLines, actualLines, message);
-//    }
-//
-//    public void assertLinesMatch(Stream<String> expectedLines, Stream<String> actualLines, Supplier<String> messageSupplier) {
-//        Assertions.assertLinesMatch(expectedLines, actualLines, messageSupplier);
-//    }
-    
+
     public void assertNotEquals(byte unexpected, byte actual) {
         handleAssertNotEquals("AssertNotEquals (byte/byte)", unexpected, actual);
         Assertions.assertNotEquals(unexpected, actual);
@@ -1159,18 +1076,6 @@ public class AnglesJUnit5Assert {
         Assertions.assertNotEquals(unexpected, actual, messageSupplier);
     }
 
-//    public void assertNotEquals(float unexpected, float actual, float delta) {
-//        Assertions.assertNotEquals(unexpected, actual, delta);
-//    }
-//
-//    public void assertNotEquals(float unexpected, float actual, float delta, String message) {
-//        Assertions.assertNotEquals(unexpected, actual, delta, message);
-//    }
-//
-//    public void assertNotEquals(float unexpected, float actual, float delta, Supplier<String> messageSupplier) {
-//        Assertions.assertNotEquals(unexpected, actual, delta, messageSupplier);
-//    }
-
     public void assertNotEquals(double unexpected, double actual) {
         handleAssertNotEquals("AssertNotEquals (double/double)", unexpected, actual);
         Assertions.assertNotEquals(unexpected, actual);
@@ -1234,18 +1139,6 @@ public class AnglesJUnit5Assert {
                 buildPrefix(nullSafeGet(messageSupplier)));
         Assertions.assertNotEquals(unexpected, actual, messageSupplier);
     }
-    
-//    public void assertNotEquals(double unexpected, double actual, double delta) {
-//        Assertions.assertNotEquals(unexpected, actual, delta);
-//    }
-//
-//    public void assertNotEquals(double unexpected, double actual, double delta, String message) {
-//        Assertions.assertNotEquals(unexpected, actual, delta, message);
-//    }
-//
-//    public void assertNotEquals(double unexpected, double actual, double delta, Supplier<String> messageSupplier) {
-//        Assertions.assertNotEquals(unexpected, actual, delta, messageSupplier);
-//    }
 
     public void assertNotEquals(char unexpected, char actual) {
         handleAssertNotEquals("AssertNotEquals (char/char)", unexpected, actual);
@@ -1359,30 +1252,6 @@ public class AnglesJUnit5Assert {
         Assertions.assertNotSame(unexpected, actual, messageSupplier);
     }
 
-//    public void assertAll(Executable... executables) throws MultipleFailuresError {
-//        Assertions.assertAll(executables);
-//    }
-//
-//    public void assertAll(String heading, Executable... executables) throws MultipleFailuresError {
-//        Assertions.assertAll(executables);
-//    }
-//
-//    public void assertAll(Collection<Executable> executables) throws MultipleFailuresError {
-//        Assertions.assertAll(executables);
-//    }
-//
-//    public void assertAll(String heading, Collection<Executable> executables) throws MultipleFailuresError {
-//        Assertions.assertAll(executables);
-//    }
-//
-//    public void assertAll(Stream<Executable> executables) throws MultipleFailuresError {
-//        Assertions.assertAll(executables);
-//    }
-//
-//    public void assertAll(String heading, Stream<Executable> executables) throws MultipleFailuresError {
-//        Assertions.assertAll(heading, executables);
-//    }
-
     public void assertDoesNotThrow(Executable executable) {
         handleDoesNotThrow("AssertDoesNotThrow", executable);
         Assertions.assertDoesNotThrow(executable);
@@ -1397,30 +1266,78 @@ public class AnglesJUnit5Assert {
         handleDoesNotThrow("AssertDoesNotThrow", executable, buildPrefix(nullSafeGet(messageSupplier)));
         Assertions.assertDoesNotThrow(executable, messageSupplier);
     }
-//
-//    public void assertTimeout(Duration timeout, Executable executable) {
-//        Assertions.assertTimeout(timeout, executable);
-//    }
-//
-//    public void assertTimeout(Duration timeout, Executable executable, String message) {
-//        Assertions.assertTimeout(timeout, executable, message);
-//    }
-//
-//    public void assertTimeout(Duration timeout, Executable executable, Supplier<String> messageSupplier) {
-//        Assertions.assertTimeout(timeout, executable, messageSupplier);
-//    }
-//
-//    public void assertTimeoutPreemptively(Duration timeout, Executable executable) {
-//        Assertions.assertTimeoutPreemptively(timeout, executable);
-//    }
-//
-//    public void assertTimeoutPreemptively(Duration timeout, Executable executable, String message) {
-//        Assertions.assertTimeoutPreemptively(timeout, executable, message);
-//    }
-//
-//    public void assertTimeoutPreemptively(Duration timeout, Executable executable, Supplier<String> messageSupplier) {
-//        Assertions.assertTimeoutPreemptively(timeout, executable, messageSupplier);
-//    }
+
+    public void assertGreaterThan(Double value1, Double value2) {
+        BigDecimal a = new BigDecimal(value1.toString());
+        BigDecimal b = new BigDecimal(value2.toString());
+        boolean comparison = a.compareTo(b) == 1;
+        handleAssertEquals("AssertGreaterThan (Double)", true, comparison,
+                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        Assertions.assertEquals(true, comparison);
+    }
+
+    public void assertLessThan(Double value1, Double value2) {
+        BigDecimal a = new BigDecimal(value1.toString());
+        BigDecimal b = new BigDecimal(value2.toString());
+        boolean comparison = a.compareTo(b) == -1;
+        handleAssertEquals("AssertLessThan (Double)", true, comparison,
+                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        Assertions.assertEquals(true, comparison);
+    }
+
+    public void assertGreaterThan(Integer value1, Integer value2) {
+        BigDecimal a = new BigDecimal(value1.toString());
+        BigDecimal b = new BigDecimal(value2.toString());
+        boolean comparison = a.compareTo(b) == 1;
+        handleAssertEquals("AssertGreaterThan (Integer)", true, comparison,
+                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        Assertions.assertEquals(true, comparison);
+    }
+
+    public void assertLessThan(Integer value1, Integer value2) {
+        BigDecimal a = new BigDecimal(value1.toString());
+        BigDecimal b = new BigDecimal(value2.toString());
+        boolean comparison = a.compareTo(b) == -1;
+        handleAssertEquals("AssertLessThan (Integer)", true, comparison,
+                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        Assertions.assertEquals(true, comparison);
+    }
+
+    public void assertGreaterThan(Float value1, Float value2) {
+        BigDecimal a = new BigDecimal(value1.toString());
+        BigDecimal b = new BigDecimal(value2.toString());
+        boolean comparison = a.compareTo(b) == 1;
+        handleAssertEquals("AssertGreaterThan (Float)", true, comparison,
+                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        Assertions.assertEquals(true, comparison);
+    }
+
+    public void assertLessThan(Float value1, Float value2) {
+        BigDecimal a = new BigDecimal(value1.toString());
+        BigDecimal b = new BigDecimal(value2.toString());
+        boolean comparison = a.compareTo(b) == -1;
+        handleAssertEquals("AssertLessThan (Float)", true, comparison,
+                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        Assertions.assertEquals(true, comparison);
+    }
+
+    public void assertGreaterThan(String value1, String value2) {
+        BigDecimal a = new BigDecimal(value1);
+        BigDecimal b = new BigDecimal(value2);
+        boolean comparison = a.compareTo(b) == 1;
+        handleAssertEquals("AssertGreaterThan (String)", true, comparison,
+                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        Assertions.assertEquals(true, comparison);
+    }
+
+    public void assertLessThan(String value1, String value2) {
+        BigDecimal a = new BigDecimal(value1);
+        BigDecimal b = new BigDecimal(value2);
+        boolean comparison = a.compareTo(b) == -1;
+        handleAssertEquals("AssertLessThan (String)", true, comparison,
+                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        Assertions.assertEquals(true, comparison);
+    }
 
     private void handleDoesNotThrow(String step, Executable executable) {
         handleDoesNotThrow(step, executable, EMPTY);
@@ -1438,7 +1355,7 @@ public class AnglesJUnit5Assert {
     }
 
     private void handleAssertSame(String step, Object expected, Object actual) {
-        handleAssertEquals(step, expected, actual, EMPTY);
+        handleAssertSame(step, expected, actual, EMPTY);
     }
 
     private void handleAssertSame(String step, Object expected, Object actual, String details) {
@@ -1500,4 +1417,48 @@ public class AnglesJUnit5Assert {
     private String nullSafeGet(Supplier<String> messageSupplier) {
         return messageSupplier != null ? (String)messageSupplier.get() : null;
     }
+
+    /*
+        TODO:
+        Implement these remaining methods from JUnit's Assertion class:
+        public void assertEquals(float expected, float actual, float delta)
+        public void assertEquals(double expected, double actual, double delta)
+        public void assertEquals(float expected, float actual, float delta, Supplier<String> messageSupplier)
+        public void assertEquals(float expected, float actual, float delta, String message)
+        public void assertEquals(double expected, double actual, double delta, String message)
+        public void assertEquals(double expected, double actual, double delta, Supplier<String> messageSupplier)
+        public void assertNotEquals(float unexpected, float actual, float delta)
+        public void assertNotEquals(float unexpected, float actual, float delta, String message)
+        public void assertNotEquals(float unexpected, float actual, float delta, Supplier<String> messageSupplier)
+        public void assertNotEquals(double unexpected, double actual, double delta)
+        public void assertNotEquals(double unexpected, double actual, double delta, String message)
+        public void assertNotEquals(double unexpected, double actual, double delta, Supplier<String> messageSupplier)
+        public void assertAll(Executable... executables) throws MultipleFailuresError
+        public void assertAll(String heading, Executable... executables) throws MultipleFailuresError
+        public void assertAll(Collection<Executable> executables) throws MultipleFailuresError
+        public void assertAll(String heading, Collection<Executable> executables) throws MultipleFailuresError
+        public void assertAll(Stream<Executable> executables) throws MultipleFailuresError
+        public void assertAll(String heading, Stream<Executable> executables) throws MultipleFailuresError
+        public void assertTimeout(Duration timeout, Executable executable)
+        public void assertTimeout(Duration timeout, Executable executable, String message)
+        public void assertTimeout(Duration timeout, Executable executable, Supplier<String> messageSupplier)
+        public void assertTimeoutPreemptively(Duration timeout, Executable executable)
+        public void assertTimeoutPreemptively(Duration timeout, Executable executable, String message)
+        public void assertTimeoutPreemptively(Duration timeout, Executable executable, Supplier<String> messageSupplier)
+        public void assertIterableEquals(Iterable<?> expected, Iterable<?> actual)
+        public void assertIterableEquals(Iterable<?> expected, Iterable<?> actual, String message)
+        public void assertIterableEquals(Iterable<?> expected, Iterable<?> actual, Supplier<String> messageSupplier)
+        public void assertLinesMatch(List<String> expectedLines, List<String> actualLines)
+        public void assertLinesMatch(List<String> expectedLines, List<String> actualLines, String message)
+        public void assertLinesMatch(List<String> expectedLines, List<String> actualLines, Supplier<String> messageSupplier)
+        public void assertLinesMatch(Stream<String> expectedLines, Stream<String> actualLines)
+        public void assertLinesMatch(Stream<String> expectedLines, Stream<String> actualLines, String message)
+        public void assertLinesMatch(Stream<String> expectedLines, Stream<String> actualLines, Supplier<String> messageSupplier)
+        public void assertArrayEquals(double[] expected, double[] actual, double delta)
+        public void assertArrayEquals(double[] expected, double[] actual, double delta, String message)
+        public void assertArrayEquals(double[] expected, double[] actual, double delta, Supplier<String> messageSupplier)
+        public void assertArrayEquals(float[] expected, float[] actual, float delta)
+        public void assertArrayEquals(float[] expected, float[] actual, float delta, String message)
+        public void assertArrayEquals(float[] expected, float[] actual, float delta, Supplier<String> messageSupplier)
+     */
 }
