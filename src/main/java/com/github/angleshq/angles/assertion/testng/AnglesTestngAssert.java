@@ -22,42 +22,42 @@ public class AnglesTestngAssert extends Assertion {
     }
 
     public void assertGreaterThan(Double value1, Double value2) {
-        assertEquals(true, anglesAssertGreaterThan(value1, value2));
+        assertEquals(true, anglesAssertGreaterThan(value1, value2, false),
+                "Checking if [" + value1.toString() + "] is Greater than [" + value2.toString() + "]");
     }
 
     public void assertLessThan(Double value1, Double value2) {
-        assertEquals(true, anglesAssertLessThan(value1, value2));
+        assertEquals(true, anglesAssertLessThan(value1, value2, false),
+                "Checking if [" + value1.toString() + "] is less than [" + value2.toString() + "]");
     }
 
     public void assertGreaterThan(Integer value1, Integer value2) {
-        assertEquals(true, anglesAssertGreaterThan(value1, value2));
+        assertEquals(true, anglesAssertGreaterThan(value1, value2, false),
+                "Checking if [" + value1.toString() + "] is Greater than [" + value2.toString() + "]");
     }
 
     public void assertLessThan(Integer value1, Integer value2) {
-        assertEquals(true, anglesAssertLessThan(value1, value2));
+        assertEquals(true, anglesAssertLessThan(value1, value2, false),
+                "Checking if [" + value1.toString() + "] is less than [" + value2.toString() + "]");
     }
 
     public void assertGreaterThan(Float value1, Float value2) {
-        assertEquals(true, anglesAssertGreaterThan(value1, value2));
+        assertEquals(true, anglesAssertGreaterThan(value1, value2, false),
+                "Checking if [" + value1.toString() + "] is Greater than [" + value2.toString() + "]");
     }
 
     public void assertLessThan(Float value1, Float value2) {
-        assertEquals(true, anglesAssertLessThan(value1, value2));
+        assertEquals(true, anglesAssertLessThan(value1, value2, false),
+                "Checking if [" + value1.toString() + "] is less than [" + value2.toString() + "]");
     }
 
     public void assertGreaterThan(String value1, String value2) {
-        assertEquals(true, anglesAssertGreaterThan(value1, value2));
+        assertEquals(true, anglesAssertGreaterThan(value1, value2, false),
+                "Checking if [" + value1 + "] is Greater than [" + value2 + "]");
     }
 
     public void assertLessThan(String value1, String value2) {
-        assertEquals(true, anglesAssertLessThan(value1, value2));
-    }
-
-    private void handleAssertEquals(String step, Object expected, Object actual, String details) {
-        if(expected.equals(actual)) {
-            getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
-        } else {
-            getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
-        }
+        assertEquals(true, anglesAssertLessThan(value1, value2, false),
+                "Checking if [" + value1 + "] is less than [" + value2 + "]");
     }
 }

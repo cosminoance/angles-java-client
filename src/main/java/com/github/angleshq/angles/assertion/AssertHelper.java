@@ -10,74 +10,121 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 public class AssertHelper {
 
     public static boolean anglesAssertGreaterThan(Double value1, Double value2) {
+        return anglesAssertGreaterThan(value1, value2, true);
+    }
+
+    public static boolean anglesAssertGreaterThan(Double value1, Double value2, boolean doAssert) {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == 1;
-        handleAssertEquals("AssertGreaterThan (Double)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        if(doAssert) {
+            handleAssertEquals("AssertGreaterThan (Double)", true, comparison,
+                    "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        }
         return comparison;
     }
-
     public static boolean anglesAssertLessThan(Double value1, Double value2) {
+        return anglesAssertLessThan(value1, value2, true);
+    }
+
+    public static boolean anglesAssertLessThan(Double value1, Double value2, boolean doAssert) {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == -1;
-        handleAssertEquals("AssertLessThan (Double)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        if(doAssert) {
+            handleAssertEquals("AssertLessThan (Double)", true, comparison,
+                    "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        }
         return comparison;
     }
 
     public static boolean anglesAssertGreaterThan(Integer value1, Integer value2) {
+        return anglesAssertGreaterThan(value1, value2, true);
+    }
+
+    public static boolean anglesAssertGreaterThan(Integer value1, Integer value2, boolean doAssert) {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == 1;
-        handleAssertEquals("AssertGreaterThan (Integer)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        if(doAssert) {
+            handleAssertEquals("AssertGreaterThan (Integer)", true, comparison,
+                    "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        }
         return comparison;
     }
 
     public static boolean anglesAssertLessThan(Integer value1, Integer value2) {
+        return anglesAssertLessThan(value1, value2, true);
+    }
+
+    public static boolean anglesAssertLessThan(Integer value1, Integer value2, boolean doAssert) {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == -1;
-        handleAssertEquals("AssertLessThan (Integer)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        if(doAssert) {
+            handleAssertEquals("AssertLessThan (Integer)", true, comparison,
+                    "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        }
         return comparison;
     }
 
     public static boolean anglesAssertGreaterThan(Float value1, Float value2) {
+        return anglesAssertGreaterThan(value1, value2, true);
+    }
+
+    public static boolean anglesAssertGreaterThan(Float value1, Float value2, boolean doAssert) {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == 1;
-        handleAssertEquals("AssertGreaterThan (Float)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        if(doAssert) {
+            handleAssertEquals("AssertGreaterThan (Float)", true, comparison,
+                    "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        }
         return comparison;
     }
 
     public static boolean anglesAssertLessThan(Float value1, Float value2) {
+        return anglesAssertLessThan(value1, value2, true);
+    }
+
+    public static boolean anglesAssertLessThan(Float value1, Float value2, boolean doAssert) {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == -1;
-        handleAssertEquals("AssertLessThan (Float)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        if(doAssert) {
+            handleAssertEquals("AssertLessThan (Float)", true, comparison,
+                    "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        }
         return comparison;
     }
 
     public static boolean anglesAssertGreaterThan(String value1, String value2) {
+        return anglesAssertGreaterThan(value1, value2, true);
+    }
+
+    public static boolean anglesAssertGreaterThan(String value1, String value2, boolean doAssert) {
         BigDecimal a = new BigDecimal(value1);
         BigDecimal b = new BigDecimal(value2);
         boolean comparison = a.compareTo(b) == 1;
-        handleAssertEquals("AssertGreaterThan (String)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        if(doAssert) {
+            handleAssertEquals("AssertGreaterThan (String)", true, comparison,
+                    "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
+        }
         return comparison;
     }
 
     public static boolean anglesAssertLessThan(String value1, String value2) {
+        return anglesAssertLessThan(value1, value2, true);
+    }
+
+    public static boolean anglesAssertLessThan(String value1, String value2, boolean doAssert) {
         BigDecimal a = new BigDecimal(value1);
         BigDecimal b = new BigDecimal(value2);
         boolean comparison = a.compareTo(b) == -1;
-        handleAssertEquals("AssertLessThan (String)", true, comparison,
-                "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        if(doAssert) {
+            handleAssertEquals("AssertLessThan (String)", true, comparison,
+                    "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
+        }
         return comparison;
     }
 
