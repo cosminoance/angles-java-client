@@ -9,8 +9,11 @@ import java.util.function.Supplier;
 
 import static com.github.angleshq.angles.assertion.AssertHelper.anglesAssertGreaterThan;
 import static com.github.angleshq.angles.assertion.AssertHelper.anglesAssertLessThan;
-import static com.github.angleshq.angles.util.AnglesReporterUtils.getAnglesReporter;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static com.github.angleshq.angles.assertion.AssertHelper.handleAssertEquals;
+import static com.github.angleshq.angles.assertion.AssertHelper.handleAssertNotEquals;
+import static com.github.angleshq.angles.assertion.AssertHelper.handleAssertNotSame;
+import static com.github.angleshq.angles.assertion.AssertHelper.handleAssertSame;
+import static com.github.angleshq.angles.assertion.AssertHelper.handleDoesNotThrow;
 
 public class AnglesJUnit5Assert {
 
@@ -1298,69 +1301,6 @@ public class AnglesJUnit5Assert {
 
     public void assertLessThan(String value1, String value2) {
         Assertions.assertEquals(true, anglesAssertLessThan(value1, value2));
-    }
-
-    private void handleDoesNotThrow(String step, Executable executable) {
-        handleDoesNotThrow(step, executable, EMPTY);
-    }
-
-    private void handleDoesNotThrow(String step, Executable executable, String details) {
-        try {
-            executable.execute();
-        } catch(Throwable e) {
-            getAnglesReporter().fail(step, "No Exception thrown",
-                    e.getClass().getSimpleName() + " : " + e.getMessage(), details);
-            return;
-        }
-        getAnglesReporter().pass(step, "No Exception thrown", "No Exception thrown", details);
-    }
-
-    private void handleAssertSame(String step, Object expected, Object actual) {
-        handleAssertSame(step, expected, actual, EMPTY);
-    }
-
-    private void handleAssertSame(String step, Object expected, Object actual, String details) {
-        if(expected == actual) {
-            getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
-        } else {
-            getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
-        }
-    }
-
-    private void handleAssertNotSame(String step, Object expected, Object actual) {
-        handleAssertEquals(step, expected, actual, EMPTY);
-    }
-
-    private void handleAssertNotSame(String step, Object expected, Object actual, String details) {
-        if(expected != actual) {
-            getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
-        } else {
-            getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
-        }
-    }
-
-    private void handleAssertEquals(String step, Object expected, Object actual) {
-        handleAssertEquals(step, expected, actual, EMPTY);
-    }
-
-    private void handleAssertEquals(String step, Object expected, Object actual, String details) {
-        if(expected.equals(actual)) {
-            getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
-        } else {
-            getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
-        }
-    }
-
-    private void handleAssertNotEquals(String step, Object expected, Object actual) {
-        handleAssertNotEquals(step, expected, actual, EMPTY);
-    }
-
-    private void handleAssertNotEquals(String step, Object expected, Object actual, String details) {
-        if(!expected.equals(actual)) {
-            getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
-        } else {
-            getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
-        }
     }
 
     private String buildPrefix(String message) {
