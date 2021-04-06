@@ -23,6 +23,7 @@ public class AssertHelper {
         }
         return comparison;
     }
+
     public static boolean anglesAssertLessThan(Double value1, Double value2) {
         return anglesAssertLessThan(value1, value2, true);
     }
