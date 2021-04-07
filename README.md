@@ -13,38 +13,27 @@ Simply add the following dependency to your POM:
 </dependency>
 ```
 
-
+Please also ensure you set the following system variables (e.g. as part of the maven-surefire-plugin):
+```
+<systemPropertyVariables>
+    <angles.url>http://127.0.0.1:3000</angles.url>
+    <angles.runName>SampleRunName</angles.runName>
+    <angles.team>SampleTeamName</angles.team>
+    <angles.component>SampleComponent</angles.component>
+    <angles.environment>SampleEnvironmentName</angles.environment>
+</systemPropertyVariables>
+```
 
 ### Testng
 Extend your base/test class with:
 ```
 AnglesTestngBaseTest
 ```
-Please also ensure you set the following system variables:
-```
-<systemPropertyVariables>
-    <angles.url>http://127.0.0.1:3000</angles.url>
-    <angles.runName>SampleRunName</angles.runName>
-    <angles.team>SampleTeamName</angles.team>
-    <angles.component>SampleComponent</angles.component>
-    <angles.environment>SampleEnvironmentName</angles.environment>
-</systemPropertyVariables>
-```
 
 ### JUnit5
 Extend your base/test class with:
 ```
 AnglesJUnit5BaseTest
-```
-Please also ensure you set the following system variables:
-```
-<systemPropertyVariables>
-    <angles.url>http://127.0.0.1:3000</angles.url>
-    <angles.runName>SampleRunName</angles.runName>
-    <angles.team>SampleTeamName</angles.team>
-    <angles.component>SampleComponent</angles.component>
-    <angles.environment>SampleEnvironmentName</angles.environment>
-</systemPropertyVariables>
 ```
 
 
@@ -64,3 +53,12 @@ Add the appender to your log4j2 configuration file:
 </Configuration>
 ```
 Please bear in mind that this appender standalone will not be able to push logs to your Angles Dashboard and requires this to be coupled with a test execution framework like JUnit5 or Testng. i.e. This plugin will not create new runs/builds.
+
+
+### Using Assertions
+Example assertion usage:
+```
+doAssert.assertEquals("expected", "actual", "This is a message");
+```
+
+If you are using Testng or JUnit5 and have already extended the relevant BaseTest classes as detailed above, you will have access to the "doAssert" object. This object would have access to the respective Assert (Testng) or Assertions (JUnit5) methods.
