@@ -151,7 +151,7 @@ public class AssertHelper {
             String actualException = e.getClass().getSimpleName();
             if (e.getClass().equals(expected)) {
                 getAnglesReporter().pass(step, actualException + "Exception Thrown",
-                        e.getClass().getSimpleName() + " : " + e.getMessage(), details);
+                        actualException + " : " + e.getMessage(), details);
                 return () -> {
                     throw e;
                 };
