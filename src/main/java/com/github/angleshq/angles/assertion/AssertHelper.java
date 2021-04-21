@@ -17,7 +17,7 @@ public class AssertHelper {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == 1;
-        if(doAssert) {
+        if (doAssert) {
             handleAssertEquals("AssertGreaterThan (Double)", true, comparison,
                     "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
         }
@@ -32,7 +32,7 @@ public class AssertHelper {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == -1;
-        if(doAssert) {
+        if (doAssert) {
             handleAssertEquals("AssertLessThan (Double)", true, comparison,
                     "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
         }
@@ -47,7 +47,7 @@ public class AssertHelper {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == 1;
-        if(doAssert) {
+        if (doAssert) {
             handleAssertEquals("AssertGreaterThan (Integer)", true, comparison,
                     "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
         }
@@ -62,7 +62,7 @@ public class AssertHelper {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == -1;
-        if(doAssert) {
+        if (doAssert) {
             handleAssertEquals("AssertLessThan (Integer)", true, comparison,
                     "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
         }
@@ -77,7 +77,7 @@ public class AssertHelper {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == 1;
-        if(doAssert) {
+        if (doAssert) {
             handleAssertEquals("AssertGreaterThan (Float)", true, comparison,
                     "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
         }
@@ -92,7 +92,7 @@ public class AssertHelper {
         BigDecimal a = new BigDecimal(value1.toString());
         BigDecimal b = new BigDecimal(value2.toString());
         boolean comparison = a.compareTo(b) == -1;
-        if(doAssert) {
+        if (doAssert) {
             handleAssertEquals("AssertLessThan (Float)", true, comparison,
                     "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
         }
@@ -107,7 +107,7 @@ public class AssertHelper {
         BigDecimal a = new BigDecimal(value1);
         BigDecimal b = new BigDecimal(value2);
         boolean comparison = a.compareTo(b) == 1;
-        if(doAssert) {
+        if (doAssert) {
             handleAssertEquals("AssertGreaterThan (String)", true, comparison,
                     "Checking if [" + a.toPlainString() + "] is greater than [" + b.toPlainString() + "]");
         }
@@ -122,7 +122,7 @@ public class AssertHelper {
         BigDecimal a = new BigDecimal(value1);
         BigDecimal b = new BigDecimal(value2);
         boolean comparison = a.compareTo(b) == -1;
-        if(doAssert) {
+        if (doAssert) {
             handleAssertEquals("AssertLessThan (String)", true, comparison,
                     "Checking if [" + a.toPlainString() + "] is less than [" + b.toPlainString() + "]");
         }
@@ -136,7 +136,7 @@ public class AssertHelper {
     public static void handleDoesNotThrow(String step, Executable executable, String details) {
         try {
             executable.execute();
-        } catch(Throwable e) {
+        } catch (Throwable e) {
             getAnglesReporter().fail(step, "No Exception thrown",
                     e.getClass().getSimpleName() + " : " + e.getMessage(), details);
             return;
@@ -144,12 +144,37 @@ public class AssertHelper {
         getAnglesReporter().pass(step, "No Exception thrown", "No Exception thrown", details);
     }
 
+    public static Executable handleThrows(String step, Class expected, Executable executable, String details) {
+        try {
+            executable.execute();
+        } catch (Throwable e) {
+            String actualException = e.getClass().getSimpleName();
+            if (e.getClass().equals(expected)) {
+                getAnglesReporter().pass(step, actualException + "Exception Thrown",
+                        e.getClass().getSimpleName() + " : " + e.getMessage(), details);
+                return () -> {
+                    throw e;
+                };
+            } else {
+                getAnglesReporter().fail(step, "Incorrect exception thrown " +
+                                "Expected: " + expected.getSimpleName() + " Actual:" + actualException,
+                        actualException + " : " + e.getMessage(), details);
+                return () -> {
+                    throw e;
+                };
+            }
+        }
+        getAnglesReporter().fail(step, "Exception thrown", "No Exception thrown", details);
+        return () -> {
+        };
+    }
+
     public static void handleAssertSame(String step, Object expected, Object actual) {
         handleAssertSame(step, expected, actual, EMPTY);
     }
 
     public static void handleAssertSame(String step, Object expected, Object actual, String details) {
-        if(expected == actual) {
+        if (expected == actual) {
             getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
         } else {
             getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
@@ -161,7 +186,7 @@ public class AssertHelper {
     }
 
     public static void handleAssertNotSame(String step, Object expected, Object actual, String details) {
-        if(expected != actual) {
+        if (expected != actual) {
             getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
         } else {
             getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
@@ -173,7 +198,7 @@ public class AssertHelper {
     }
 
     public static void handleAssertEquals(String step, Object expected, Object actual, String details) {
-        if(expected.equals(actual)) {
+        if (expected.equals(actual)) {
             getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
         } else {
             getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
@@ -185,10 +210,11 @@ public class AssertHelper {
     }
 
     public static void handleAssertNotEquals(String step, Object expected, Object actual, String details) {
-        if(!expected.equals(actual)) {
+        if (!expected.equals(actual)) {
             getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
         } else {
             getAnglesReporter().fail(step, expected.toString(), actual.toString(), details);
         }
     }
+
 }

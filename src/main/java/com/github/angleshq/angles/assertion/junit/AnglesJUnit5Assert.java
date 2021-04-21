@@ -14,6 +14,7 @@ import static com.github.angleshq.angles.assertion.AssertHelper.handleAssertNotE
 import static com.github.angleshq.angles.assertion.AssertHelper.handleAssertNotSame;
 import static com.github.angleshq.angles.assertion.AssertHelper.handleAssertSame;
 import static com.github.angleshq.angles.assertion.AssertHelper.handleDoesNotThrow;
+import static com.github.angleshq.angles.assertion.AssertHelper.handleThrows;
 
 public class AnglesJUnit5Assert {
 
@@ -260,7 +261,7 @@ public class AnglesJUnit5Assert {
         handleAssertEquals("AssertEquals (Byte/byte)", expected, actual);
         Assertions.assertEquals(expected, actual);
     }
-    
+
     public void assertEquals(Byte expected, Byte actual) {
         handleAssertEquals("AssertEquals (Byte/Byte)", expected, actual);
         Assertions.assertEquals(expected, actual);
@@ -281,7 +282,7 @@ public class AnglesJUnit5Assert {
         Assertions.assertEquals(expected, actual, message);
     }
 
-    
+
     public void assertEquals(Byte expected, Byte actual, String message) {
         handleAssertEquals("AssertEquals (Byte/Byte)", expected, actual, message);
         Assertions.assertEquals(expected, actual, message);
@@ -322,7 +323,7 @@ public class AnglesJUnit5Assert {
         Assertions.assertEquals(expected, actual);
     }
 
-    
+
     public void assertEquals(Integer expected, Integer actual) {
         handleAssertEquals("AssertEquals (Integer/Integer)", expected, actual);
         Assertions.assertEquals(expected, actual);
@@ -1067,7 +1068,7 @@ public class AnglesJUnit5Assert {
                 buildPrefix(nullSafeGet(messageSupplier)));
         Assertions.assertNotEquals(unexpected, actual, messageSupplier);
     }
-    
+
     public void assertNotEquals(Float unexpected, float actual, Supplier<String> messageSupplier) {
         handleAssertNotEquals("AssertNotEquals (Float/float)", unexpected, actual,
                 buildPrefix(nullSafeGet(messageSupplier)));
@@ -1271,6 +1272,13 @@ public class AnglesJUnit5Assert {
         Assertions.assertDoesNotThrow(executable, messageSupplier);
     }
 
+    public void assertThrowsException(Class expected, Executable executable, String... info) {
+        String message = info.length > 0 ? info[0] : "";
+        Assertions.assertThrows(expected,
+                handleThrows("AssertThrows " + expected.toString(), expected, executable, message)
+        );
+    }
+
     public void assertGreaterThan(Double value1, Double value2) {
         Assertions.assertEquals(true, anglesAssertGreaterThan(value1, value2));
     }
@@ -1308,7 +1316,7 @@ public class AnglesJUnit5Assert {
     }
 
     private String nullSafeGet(Supplier<String> messageSupplier) {
-        return messageSupplier != null ? (String)messageSupplier.get() : null;
+        return messageSupplier != null ? (String) messageSupplier.get() : null;
     }
 
     /*
