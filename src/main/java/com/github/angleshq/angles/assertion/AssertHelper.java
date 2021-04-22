@@ -145,29 +145,22 @@ public class AssertHelper {
         getAnglesReporter().pass(step, "No Exception thrown", "No Exception thrown", details);
     }
 
-    public static Executable handleThrows(String step, Class expected, Executable executable, String details) {
+    public static void handleThrows(String step, Class expected, Executable executable, String details) {
         try {
             executable.execute();
         } catch (Throwable e) {
             String actualException = e.getClass().getSimpleName();
             if (e.getClass().equals(expected)) {
+
                 getAnglesReporter().pass(step, actualException + "Exception Thrown",
                         actualException + " : " + e.getMessage(), details);
-                return () -> {
-                    throw e;
-                };
             } else {
                 getAnglesReporter().fail(step, "Incorrect exception thrown " +
                                 "Expected: " + expected.getSimpleName() + " Actual:" + actualException,
                         actualException + " : " + e.getMessage(), details);
-                return () -> {
-                    throw e;
-                };
             }
         }
         getAnglesReporter().fail(step, "Exception thrown", "No Exception thrown", details);
-        return () -> {
-        };
     }
 
     public static void handleAssertSame(String step, Object expected, Object actual) {
@@ -208,9 +201,9 @@ public class AssertHelper {
 
     public static void handleAssertNotNull(String step, Object actual) {
         if (!Objects.isNull(actual)) {
-            getAnglesReporter().fail(step, "null", actual.toString(), EMPTY);
-        } else {
             getAnglesReporter().pass(step, "null", actual.toString(), EMPTY);
+        } else {
+            getAnglesReporter().fail(step, "null", actual.toString(), EMPTY);
         }
     }
 

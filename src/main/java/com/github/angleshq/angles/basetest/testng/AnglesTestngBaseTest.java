@@ -24,6 +24,8 @@ public class AnglesTestngBaseTest extends AbstractAnglesTestCase {
 
     @AfterMethod(alwaysRun = true)
     public void anglesAfterMethod(Method method) {
-        anglesReporter.saveTest();
+        if(anglesEnabled) {
+            anglesReporter.saveTest();
+        }
     }
 }
