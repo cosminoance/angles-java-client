@@ -58,6 +58,7 @@ public class AnglesReporter {
         createBuild.setEnvironment(environmentName);
         createBuild.setTeam(teamName);
         createBuild.setComponent(componentName);
+        createBuild.setStart(new Date());
         try {
             currentBuild.set(buildRequests.create(createBuild));
         } catch (IOException | AnglesServerException exception) {
@@ -197,10 +198,10 @@ public class AnglesReporter {
         createScreenshot.setTimestamp(new Date());
         createScreenshot.setView(details.getView());
         createScreenshot.setFilePath(details.getPath());
+        createScreenshot.setPlatform(details.getPlatform());
+        createScreenshot.setTags(details.getTags());
         try {
             Screenshot response = screenshotRequests.create(createScreenshot);
-            // we need to store the platform details or tags
-            storeScreenshotDetails(response.getId(), details);
             return response;
         } catch (IOException | AnglesServerException exception) {
             throw new Error("Unable store screenshot due to [" + exception.getMessage() + "]");
@@ -221,18 +222,5 @@ public class AnglesReporter {
             }
         }
         return null;
-    }
-
-    private void storeScreenshotDetails(String screenshotId, ScreenshotDetails details) {
-        if (details.getPlatform() != null || details.getTags() != null) {
-            UpdateScreenshot updateScreenshot = new UpdateScreenshot();
-            if (details.getPlatform() != null) updateScreenshot.setPlatform(details.getPlatform());
-            if (details.getTags() != null) updateScreenshot.setTags(details.getTags());
-            try {
-                screenshotRequests.update(screenshotId, updateScreenshot);
-            } catch (IOException | AnglesServerException exception) {
-                throw new Error("Unable update screenshot due to [" + exception.getMessage() + "]");
-            }
-        }
     }
 }

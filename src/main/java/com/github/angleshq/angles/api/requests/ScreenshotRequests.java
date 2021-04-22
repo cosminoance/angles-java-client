@@ -4,6 +4,7 @@ import com.github.angleshq.angles.api.exceptions.AnglesServerException;
 import com.github.angleshq.angles.api.models.Platform;
 import com.github.angleshq.angles.api.models.execution.Execution;
 import com.github.angleshq.angles.api.models.screenshot.*;
+import com.google.gson.JsonArray;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -34,17 +35,30 @@ public class ScreenshotRequests extends BaseRequests {
     public Screenshot create(CreateScreenshot createScreenshot) throws IOException, AnglesServerException {
         File screenShotFile = new File(createScreenshot.getFilePath());
         String mimeType = tika.detect(screenShotFile);
-        HttpEntity entity = MultipartEntityBuilder
-                .create()
-                .addBinaryBody("screenshot", screenShotFile, ContentType.getByMimeType(mimeType), screenShotFile.getName())
-                .build();
-
-        Map<String, String> headers = new HashMap<>();
-        headers.put("view", createScreenshot.getView());
-        headers.put("buildId", createScreenshot.getBuildId());
-        headers.put("timestamp", sdf.format(createScreenshot.getTimestamp()));
-
-        CloseableHttpResponse response = sendMultiPartEntity(basePath, headers, entity);
+        MultipartEntityBuilder entityBuilder = MultipartEntityBuilder
+            .create()
+            .addBinaryBody("screenshot", screenShotFile, ContentType.getByMimeType(mimeType), screenShotFile.getName())
+            .addTextBody("view", createScreenshot.getView())
+            .addTextBody("buildId", createScreenshot.getBuildId())
+            .addTextBody("timestamp", sdf.format(createScreenshot.getTimestamp()))
+            .setContentType(ContentType.MULTIPART_FORM_DATA);
+        if (createScreenshot.getPlatform() != null) {
+            Platform platform = createScreenshot.getPlatform();
+            if (platform.getPlatformName() != null) entityBuilder.addTextBody("platformName", platform.getPlatformName());
+            if (platform.getPlatformVersion() != null) entityBuilder.addTextBody("platformVersion", platform.getPlatformVersion());
+            if (platform.getBrowserName() != null) entityBuilder.addTextBody("browserName", platform.getBrowserName());
+            if (platform.getBrowserVersion() != null) entityBuilder.addTextBody("browserVersion", platform.getBrowserVersion());
+            if (platform.getDeviceName() != null) entityBuilder.addTextBody("deviceName", platform.getDeviceName());
+        }
+        if (createScreenshot.getTags() != null) {
+            JsonArray jsonArray = new JsonArray();
+            for (String tag: createScreenshot.getTags()) {
+                jsonArray.add(tag);
+            }
+            entityBuilder.addTextBody("tags", jsonArray.toString());
+        }
+        HttpEntity entity = entityBuilder.build();
+        CloseableHttpResponse response = sendMultiPartEntity(basePath, new HashMap<>(), entity);
         return processResponse(response, Screenshot.class);
     }
 
