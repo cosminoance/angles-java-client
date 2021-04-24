@@ -5,14 +5,16 @@ on:
     branches:
       - main
 jobs:
-
-  bump verion:
+  bump:
     name: "Bump version "
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Maven Central Repository
-        uses: actions/setup-java@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.head_ref }}
+      - name: Set up Java
+        uses: actions/setup-java@v1
         with:
           java-version: '8'
           distribution: 'adopt'
