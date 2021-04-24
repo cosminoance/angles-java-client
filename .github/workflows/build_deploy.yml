@@ -16,9 +16,6 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
-          server-id: ossrh
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
      - name: Bump version
         id: bump
         uses: mickem/gh-action-bump-maven-version
