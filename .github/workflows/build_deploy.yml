@@ -24,7 +24,7 @@ jobs:
         with:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          
+
       - name: GPG user IDs
         run: |
           echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
