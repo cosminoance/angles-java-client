@@ -9,6 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Bump Version
+        id: bump
+        uses: nnichols/maven-version-bump-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print Version
+        run: "echo 'New Version: ${{steps.bump.outputs.version}}'"
       - name: Set up Maven Central Repository
         uses: actions/setup-java@v2
         with:
@@ -17,11 +24,6 @@ jobs:
           server-id: ossrh
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-      - name: Bump Version
-        id: bump
-        uses: nnichols/maven-version-bump-action@v3
-        with:
-          github-token: ${{ secrets.github_token }}
       - name: Publish package
         run: mvn --batch-mode deploy
         env:
