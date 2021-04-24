@@ -25,9 +25,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: git pull origin main
       - name: Set up Maven Central Repository
         uses: actions/setup-java@v2
-        run: git pull origin main
         with:
           java-version: '8'
           distribution: 'adopt'
