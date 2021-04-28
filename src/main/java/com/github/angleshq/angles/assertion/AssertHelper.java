@@ -3,6 +3,7 @@ package com.github.angleshq.angles.assertion;
 import org.junit.jupiter.api.function.Executable;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import static com.github.angleshq.angles.util.AnglesReporterUtils.getAnglesReporter;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -197,7 +198,29 @@ public class AssertHelper {
         handleAssertEquals(step, expected, actual, EMPTY);
     }
 
+    public static void handleAssertNull(String step, Object actual) {
+        if (Objects.isNull(actual)) {
+            getAnglesReporter().pass(step, "null", "null", EMPTY);
+        } else {
+            getAnglesReporter().fail(step, "null", "null", EMPTY);
+        }
+    }
+
+    public static void handleAssertNotNull(String step, Object actual) {
+        if (!Objects.isNull(actual)) {
+            getAnglesReporter().fail(step, "null", actual.toString(), EMPTY);
+        } else {
+            getAnglesReporter().pass(step, "null", actual.toString(), EMPTY);
+        }
+    }
+
     public static void handleAssertEquals(String step, Object expected, Object actual, String details) {
+        if(Objects.isNull(expected)){
+            expected = new String("null");
+        }
+        if(Objects.isNull(actual)){
+            actual = new String("null");
+        }
         if (expected.equals(actual)) {
             getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
         } else {
