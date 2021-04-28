@@ -76,7 +76,7 @@ public class AnglesJUnit5Assert {
     }
 
     public void assertNull(Object actual) {
-        handleAssertNull("AssertNull",  actual);
+        handleAssertNull("AssertNull", actual);
         Assertions.assertNull(actual);
     }
 
@@ -91,7 +91,7 @@ public class AnglesJUnit5Assert {
     }
 
     public void assertNotNull(Object actual) {
-        handleAssertNotNull("AssertNotNull",  actual);
+        handleAssertNotNull("AssertNotNull", actual);
         Assertions.assertNotNull(actual);
     }
 
@@ -1267,9 +1267,8 @@ public class AnglesJUnit5Assert {
 
     public void assertThrowsException(Class expected, Executable executable, String... info) {
         String message = info.length > 0 ? info[0] : "";
-        Assertions.assertThrows(expected,
-                handleThrows("AssertThrows " + expected.toString(), expected, executable, message)
-        );
+        handleThrows("AssertThrows " + expected.toString(), expected, executable, message);
+        Assertions.assertThrows(expected, executable);
     }
 
     public void assertGreaterThan(Double value1, Double value2) {
