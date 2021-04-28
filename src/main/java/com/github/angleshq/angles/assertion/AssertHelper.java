@@ -208,9 +208,9 @@ public class AssertHelper {
 
     public static void handleAssertNotNull(String step, Object actual) {
         if (!Objects.isNull(actual)) {
-            getAnglesReporter().fail(step, "null", actual.toString(), EMPTY);
-        } else {
             getAnglesReporter().pass(step, "null", actual.toString(), EMPTY);
+        } else {
+            getAnglesReporter().fail(step, "null", actual.toString(), EMPTY);
         }
     }
 
