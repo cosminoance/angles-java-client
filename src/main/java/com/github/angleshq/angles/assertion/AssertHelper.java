@@ -137,12 +137,11 @@ public class AssertHelper {
     public static void handleDoesNotThrow(String step, Executable executable, String details) {
         try {
             executable.execute();
+            getAnglesReporter().pass(step, "No Exception thrown", "No Exception thrown", details);
         } catch (Throwable e) {
             getAnglesReporter().fail(step, "No Exception thrown",
                     e.getClass().getSimpleName() + " : " + e.getMessage(), details);
-            return;
         }
-        getAnglesReporter().pass(step, "No Exception thrown", "No Exception thrown", details);
     }
 
     public static void handleThrows(String step, Class expected, Executable executable, String details) {
