@@ -13,14 +13,4 @@ public class AnglesCucumberHooks extends AbstractAnglesTestCase {
 
     }
 
-//        @BeforeClass
-//    public static void anglesCucumberSetup() {
-//        try {
-//            anglesReporter = initialiseAnglesTestParameters();
-//            anglesReporter.startBuild(getRunName(), getEnvironment(), getTeam(), getComponent());
-//        } catch (AnglesPropertyNotGivenException e) {
-//            System.out.println("Please ensure you provide all required system properties for Angles Dashboard.");
-//        }
-//    }
-
 }

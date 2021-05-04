@@ -1,14 +1,16 @@
-package com.github.angleshq.angles.basetest.cucumber;
+package com.github.angleshq.angles.listeners.cucumber;
 
+import com.github.angleshq.angles.basetest.cucumber.AnglesCucumberHooks;
 import cucumber.api.Result;
 import cucumber.api.TestStep;
 import cucumber.api.event.EventHandler;
 import cucumber.api.event.TestCaseFinished;
-import cucumber.api.event.TestStepFinished;
 import cucumber.api.event.TestStepStarted;
 import cucumber.api.formatter.Formatter;
 import cucumber.runner.PickleTestStep;
-import gherkin.pickles.PickleStep;
+import gherkin.pickles.PickleCell;
+import gherkin.pickles.PickleRow;
+import gherkin.pickles.PickleTable;
 
 
 public class AnglesCucumber2Adapter extends AnglesCucumberHooks implements Formatter {
@@ -19,11 +21,19 @@ public class AnglesCucumber2Adapter extends AnglesCucumberHooks implements Forma
             TestStep testStep = event.testStep;
             if (testStep.getClass() == PickleTestStep.class) {
                 String text = event.testStep.getStepText();
-                String argument = testStep.getStepArgument().toString();
-                if(testStep.getStepArgument().size()>0) {
-                    anglesReporter.info("Step: " + text + argument);
+                String argumentTable = "\n";
+                try {
+                    PickleTable argument = (PickleTable) testStep.getStepArgument().get(0);
+                    for (PickleRow row : argument.getRows()) {
+                        argumentTable += "\n| ";
+                        for (PickleCell cell : row.getCells()) {
+                            argumentTable += cell.getValue() + " | ";
+                        }
+                    }
+                    anglesReporter.info("Step: " + text + " " + argumentTable);
+                } catch (Exception e) {
+                    anglesReporter.info("Step: " + text);
                 }
-
             }
         }
     };
