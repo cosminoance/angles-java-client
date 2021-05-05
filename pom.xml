@@ -11,9 +11,12 @@
     <name>Angles Java client</name>
     <description>This is the java client for the Angles test results dashboard and contains all the necessary methods to store your test results in the Angles dashboard.</description>
     <url>https://github.com/AnglesHQ/angles-java-client</url>
+
     <properties>
+        <!-- AnglesCucumber2Adapter cucumber version -->
         <cucumber.core.version>2.3.1</cucumber.core.version>
     </properties>
+
     <licenses>
         <license>
             <name>The Apache Software Licence, Version 2.0</name>
@@ -125,23 +128,6 @@
             <artifactId>cucumber-junit</artifactId>
             <!-- version that supports cucumber core-->
             <version>${cucumber.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-spring</artifactId>
-            <!-- version that supports cucumber core-->
-            <version>${cucumber.core.version}</version>
-        </dependency>
-        <!--Supporting cucumber 2.3 angles plugin -->
-        <dependency>
-            <groupId>com.aventstack</groupId>
-            <artifactId>extentreports-cucumber2-adapter</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-plugin</artifactId>
-            <version>6.10.3</version>
         </dependency>
 
         <dependency>
