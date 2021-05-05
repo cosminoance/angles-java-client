@@ -1,6 +1,7 @@
 package com.github.angleshq.angles.listeners.cucumber;
 
-import com.github.angleshq.angles.basetest.cucumber.AnglesCucumberHooks;
+import com.github.angleshq.angles.assertion.junit.AnglesJUnit5Assert;
+import com.github.angleshq.angles.basetest.AbstractAnglesTestCase;
 import cucumber.api.Result;
 import cucumber.api.TestStep;
 import cucumber.api.event.*;
@@ -10,11 +11,12 @@ import gherkin.pickles.PickleCell;
 import gherkin.pickles.PickleRow;
 import gherkin.pickles.PickleTable;
 
-import java.io.File;
 
+public class AnglesCucumber2Adapter extends AbstractAnglesTestCase implements Formatter {
+    //initialize the assertion instance
+    protected AnglesJUnit5Assert doAssert = new AnglesJUnit5Assert();
 
-public class AnglesCucumber2Adapter extends AnglesCucumberHooks implements Formatter {
-
+    //event handlers - Angles loggers
     protected EventHandler<TestStepStarted> handleTestStepFinished = new EventHandler<TestStepStarted>() {
         @Override
         public void receive(TestStepStarted event) {
@@ -51,7 +53,7 @@ public class AnglesCucumber2Adapter extends AnglesCucumberHooks implements Forma
     protected EventHandler<TestCaseFinished> handleTestCaseFinished =
             new EventHandler<TestCaseFinished>() {
                 @Override
-                public void receive(cucumber.api.event.TestCaseFinished event) {
+                public void receive(TestCaseFinished event) {
                     cucumber.api.TestCase testCase = event.testCase;
                     cucumber.api.Result result = event.result;
                     Throwable error = result.getError();
@@ -77,7 +79,7 @@ public class AnglesCucumber2Adapter extends AnglesCucumberHooks implements Forma
             };
 
     @Override
-    public void setEventPublisher(cucumber.api.event.EventPublisher publisher) {
+    public void setEventPublisher(EventPublisher publisher) {
         publisher.registerHandlerFor(cucumber.api.event.TestCaseFinished.class, handleTestCaseFinished);
         publisher.registerHandlerFor(cucumber.api.event.TestCaseStarted.class, handleTestCaseStarted);
         publisher.registerHandlerFor(cucumber.api.event.TestStepStarted.class, handleTestStepFinished);
