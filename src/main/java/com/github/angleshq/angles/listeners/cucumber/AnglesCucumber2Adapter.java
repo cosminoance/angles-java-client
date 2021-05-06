@@ -11,7 +11,6 @@ import gherkin.pickles.PickleCell;
 import gherkin.pickles.PickleRow;
 import gherkin.pickles.PickleTable;
 
-
 public class AnglesCucumber2Adapter extends AbstractAnglesTestCase implements Formatter {
     //initialize the assertion instance
     protected AnglesJUnit5Assert doAssert = new AnglesJUnit5Assert();
@@ -23,6 +22,8 @@ public class AnglesCucumber2Adapter extends AbstractAnglesTestCase implements Fo
             TestStep testStep = event.testStep;
             if (testStep.getClass() == PickleTestStep.class) {
                 String text = event.testStep.getStepText();
+                anglesReporter.startAction(text);
+                anglesReporter.info(text);
                 String argumentTable = "\n";
                 try {
                     PickleTable argument = (PickleTable) testStep.getStepArgument().get(0);
@@ -32,9 +33,21 @@ public class AnglesCucumber2Adapter extends AbstractAnglesTestCase implements Fo
                             argumentTable += cell.getValue() + " | ";
                         }
                     }
-                    anglesReporter.info("Step: " + text + " " + argumentTable);
+                    anglesReporter.info(argumentTable);
                 } catch (Exception e) {
-                    anglesReporter.info("Step: " + text);
+
+                }
+
+            }
+            else{
+                String hookName = testStep.getHookType().name();
+                if(hookName.equals("Before")) {
+                    anglesReporter.startAction("Setup");
+                    anglesReporter.info (hookName);
+                }
+                else if(hookName.equals("After")) {
+                    anglesReporter.startAction("Cleanup");
+                    anglesReporter.info (hookName);
                 }
             }
         }
@@ -45,6 +58,9 @@ public class AnglesCucumber2Adapter extends AbstractAnglesTestCase implements Fo
         public void receive(TestCaseStarted event) {
             String[] featurePath = event.testCase.getScenarioDesignation().split(":");
             String featureName = featurePath[0];
+            //further split the path to get just the feature file name itself
+            featurePath = featureName.split("/");
+            featureName = featurePath[featurePath.length-1];
             String testName = event.testCase.getName();
             anglesReporter.startTest(featureName, testName);
         }
@@ -60,21 +76,19 @@ public class AnglesCucumber2Adapter extends AbstractAnglesTestCase implements Fo
                     String scenarioName = testCase.getName();
                     TestStep testStep = testCase.getTestSteps().get(0);
                     String text = testStep.getHookType().toString();
-                    //anglesReporter.info("Finished test step" + text);
-
                     String id = "" + testCase.getUri() + testCase.getLine();
                     System.out.println("Testcase " + id + " - " + result.getStatus());
                     if (result.getStatus().equals(Result.Type.PASSED)) {
                         anglesReporter.pass(scenarioName + " passed!", "", "", "");
                     }
                     if (result.getStatus().equals(Result.Type.FAILED)) {
-                        anglesReporter.fail(scenarioName + " passed!", "", "", "");
+                        anglesReporter.fail(scenarioName + " failed!", "",
+                                event.result.getErrorMessage(), "Test has failed");
                     }
                     if (result.getStatus().equals(Result.Type.SKIPPED)) {
-                        anglesReporter.fail(scenarioName + " passed!", "", "", "");
+                        anglesReporter.fail(scenarioName + " skipped!", "", "", "Test NOT RUN");
                     }
                     anglesReporter.saveTest();
-
                 }
             };
 
