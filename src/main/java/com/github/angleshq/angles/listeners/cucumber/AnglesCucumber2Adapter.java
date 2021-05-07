@@ -35,19 +35,16 @@ public class AnglesCucumber2Adapter extends AbstractAnglesTestCase implements Fo
                     }
                     anglesReporter.info(argumentTable);
                 } catch (Exception e) {
-
+                    anglesReporter.info("Cannot show argument table: " + e.getMessage());
                 }
-
-            }
-            else{
+            } else {
                 String hookName = testStep.getHookType().name();
-                if(hookName.equals("Before")) {
+                if (hookName.equals("Before")) {
                     anglesReporter.startAction("Setup");
-                    anglesReporter.info (hookName);
-                }
-                else if(hookName.equals("After")) {
+                    anglesReporter.info(hookName);
+                } else if (hookName.equals("After")) {
                     anglesReporter.startAction("Cleanup");
-                    anglesReporter.info (hookName);
+                    anglesReporter.info(hookName);
                 }
             }
         }
@@ -60,37 +57,36 @@ public class AnglesCucumber2Adapter extends AbstractAnglesTestCase implements Fo
             String featureName = featurePath[0];
             //further split the path to get just the feature file name itself
             featurePath = featureName.split("/");
-            featureName = featurePath[featurePath.length-1];
+            featureName = featurePath[featurePath.length - 1];
             String testName = event.testCase.getName();
             anglesReporter.startTest(featureName, testName);
         }
     };
 
-    protected EventHandler<TestCaseFinished> handleTestCaseFinished =
-            new EventHandler<TestCaseFinished>() {
-                @Override
-                public void receive(TestCaseFinished event) {
-                    cucumber.api.TestCase testCase = event.testCase;
-                    cucumber.api.Result result = event.result;
-                    Throwable error = result.getError();
-                    String scenarioName = testCase.getName();
-                    TestStep testStep = testCase.getTestSteps().get(0);
-                    String text = testStep.getHookType().toString();
-                    String id = "" + testCase.getUri() + testCase.getLine();
-                    System.out.println("Testcase " + id + " - " + result.getStatus());
-                    if (result.getStatus().equals(Result.Type.PASSED)) {
-                        anglesReporter.pass(scenarioName + " passed!", "", "", "");
-                    }
-                    if (result.getStatus().equals(Result.Type.FAILED)) {
-                        anglesReporter.fail(scenarioName + " failed!", "",
-                                event.result.getErrorMessage(), "Test has failed");
-                    }
-                    if (result.getStatus().equals(Result.Type.SKIPPED)) {
-                        anglesReporter.fail(scenarioName + " skipped!", "", "", "Test NOT RUN");
-                    }
-                    anglesReporter.saveTest();
-                }
-            };
+    protected EventHandler<TestCaseFinished> handleTestCaseFinished = new EventHandler<TestCaseFinished>() {
+        @Override
+        public void receive(TestCaseFinished event) {
+            cucumber.api.TestCase testCase = event.testCase;
+            cucumber.api.Result result = event.result;
+            Throwable error = result.getError();
+            String scenarioName = testCase.getName();
+            TestStep testStep = testCase.getTestSteps().get(0);
+            String text = testStep.getHookType().toString();
+            String id = "" + testCase.getUri() + testCase.getLine();
+            System.out.println("Testcase " + id + " - " + result.getStatus());
+            if (result.getStatus().equals(Result.Type.PASSED)) {
+                anglesReporter.pass(scenarioName + " passed!", "", "", "");
+            }
+            if (result.getStatus().equals(Result.Type.FAILED)) {
+                anglesReporter.fail(scenarioName + " failed!", "",
+                        event.result.getErrorMessage(), "Test has failed");
+            }
+            if (result.getStatus().equals(Result.Type.SKIPPED)) {
+                anglesReporter.fail(scenarioName + " skipped!", "", "", "Test NOT RUN");
+            }
+            anglesReporter.saveTest();
+        }
+    };
 
     @Override
     public void setEventPublisher(EventPublisher publisher) {
