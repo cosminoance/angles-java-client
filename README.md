@@ -35,8 +35,23 @@ Extend your base/test class with:
 ```
 AnglesJUnit5BaseTest
 ```
-
-
+### Cucumber 2
+- Extend the step definition file with: 
+    ```java
+    public class StepDef extends AnglesCucumber2Adapter
+    ```
+    - Include `AnglesCucumber2Adapter` as a plugin in the *run with* class if you run through `Maven`
+        ```java
+        @CucumberOptions(plugin = { 
+              "com.github.angleshq.angles.listeners.cucumber.AnglesCucumber2Adapter"})   
+        ```
+- Inside the `step definition` class, you need to include an empty `@Before` method to allow instantiation of the `Angles` reporter.
+    ```java
+  @Before
+    public static void initilizeAnglesAdapter() {
+    }
+    ```
+  
 ### Log4j2 Appender
 Add the appender to your log4j2 configuration file:
 ```

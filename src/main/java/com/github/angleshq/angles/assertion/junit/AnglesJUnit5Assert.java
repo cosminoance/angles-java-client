@@ -7,14 +7,7 @@ import org.junit.platform.commons.util.StringUtils;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import static com.github.angleshq.angles.assertion.AssertHelper.anglesAssertGreaterThan;
-import static com.github.angleshq.angles.assertion.AssertHelper.anglesAssertLessThan;
-import static com.github.angleshq.angles.assertion.AssertHelper.handleAssertEquals;
-import static com.github.angleshq.angles.assertion.AssertHelper.handleAssertNotEquals;
-import static com.github.angleshq.angles.assertion.AssertHelper.handleAssertNotSame;
-import static com.github.angleshq.angles.assertion.AssertHelper.handleAssertSame;
-import static com.github.angleshq.angles.assertion.AssertHelper.handleDoesNotThrow;
-import static com.github.angleshq.angles.assertion.AssertHelper.handleThrows;
+import static com.github.angleshq.angles.assertion.AssertHelper.*;
 
 public class AnglesJUnit5Assert {
 
@@ -83,7 +76,7 @@ public class AnglesJUnit5Assert {
     }
 
     public void assertNull(Object actual) {
-        handleAssertEquals("AssertNull", null, actual);
+        handleAssertNull("AssertNull", actual);
         Assertions.assertNull(actual);
     }
 
@@ -98,7 +91,7 @@ public class AnglesJUnit5Assert {
     }
 
     public void assertNotNull(Object actual) {
-        handleAssertNotEquals("AssertNotNull", null, actual);
+        handleAssertNotNull("AssertNotNull", actual);
         Assertions.assertNotNull(actual);
     }
 
@@ -1274,9 +1267,8 @@ public class AnglesJUnit5Assert {
 
     public void assertThrowsException(Class expected, Executable executable, String... info) {
         String message = info.length > 0 ? info[0] : "";
-        Assertions.assertThrows(expected,
-                handleThrows("AssertThrows " + expected.toString(), expected, executable, message)
-        );
+        handleThrows("AssertThrows " + expected.toString(), expected, executable, message);
+        Assertions.assertThrows(expected, executable);
     }
 
     public void assertGreaterThan(Double value1, Double value2) {

@@ -3,6 +3,7 @@ package com.github.angleshq.angles.assertion;
 import org.junit.jupiter.api.function.Executable;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import static com.github.angleshq.angles.util.AnglesReporterUtils.getAnglesReporter;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -136,37 +137,28 @@ public class AssertHelper {
     public static void handleDoesNotThrow(String step, Executable executable, String details) {
         try {
             executable.execute();
+            getAnglesReporter().pass(step, "No Exception thrown", "No Exception thrown", details);
         } catch (Throwable e) {
             getAnglesReporter().fail(step, "No Exception thrown",
                     e.getClass().getSimpleName() + " : " + e.getMessage(), details);
-            return;
         }
-        getAnglesReporter().pass(step, "No Exception thrown", "No Exception thrown", details);
     }
 
-    public static Executable handleThrows(String step, Class expected, Executable executable, String details) {
+    public static void handleThrows(String step, Class expected, Executable executable, String details) {
         try {
             executable.execute();
+            getAnglesReporter().fail(step, "Exception thrown", "No Exception thrown", details);
         } catch (Throwable e) {
             String actualException = e.getClass().getSimpleName();
             if (e.getClass().equals(expected)) {
                 getAnglesReporter().pass(step, actualException + "Exception Thrown",
                         actualException + " : " + e.getMessage(), details);
-                return () -> {
-                    throw e;
-                };
             } else {
                 getAnglesReporter().fail(step, "Incorrect exception thrown " +
                                 "Expected: " + expected.getSimpleName() + " Actual:" + actualException,
                         actualException + " : " + e.getMessage(), details);
-                return () -> {
-                    throw e;
-                };
             }
         }
-        getAnglesReporter().fail(step, "Exception thrown", "No Exception thrown", details);
-        return () -> {
-        };
     }
 
     public static void handleAssertSame(String step, Object expected, Object actual) {
@@ -197,7 +189,29 @@ public class AssertHelper {
         handleAssertEquals(step, expected, actual, EMPTY);
     }
 
+    public static void handleAssertNull(String step, Object actual) {
+        if (Objects.isNull(actual)) {
+            getAnglesReporter().pass(step, "null", "null", EMPTY);
+        } else {
+            getAnglesReporter().fail(step, "null", "null", EMPTY);
+        }
+    }
+
+    public static void handleAssertNotNull(String step, Object actual) {
+        if (!Objects.isNull(actual)) {
+            getAnglesReporter().pass(step, "null", actual.toString(), EMPTY);
+        } else {
+            getAnglesReporter().fail(step, "null", actual.toString(), EMPTY);
+        }
+    }
+
     public static void handleAssertEquals(String step, Object expected, Object actual, String details) {
+        if(Objects.isNull(expected)){
+            expected = new String("null");
+        }
+        if(Objects.isNull(actual)){
+            actual = new String("null");
+        }
         if (expected.equals(actual)) {
             getAnglesReporter().pass(step, expected.toString(), actual.toString(), details);
         } else {
