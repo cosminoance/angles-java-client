@@ -17,10 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AnglesReporter {
+public class AnglesReporter implements AnglesReporterInterface {
 
     public static final String DEFAULT_ACTION_NAME = "Test Details";
-    private static Map<String, AnglesReporter> reporterMap = new HashMap<>();
+    private static Map<String, AnglesReporterInterface> reporterMap = new HashMap<>();
     private String baseUrl;
     private BuildRequests buildRequests;
     private ExecutionRequests executionRequests;
@@ -33,11 +33,15 @@ public class AnglesReporter {
     private InheritableThreadLocal<Action> currentAction = new InheritableThreadLocal<>();
     private ThreadLocal<Action> setUpAction = new InheritableThreadLocal<>();
 
-    public static AnglesReporter getInstance(String url) {
-        if (!reporterMap.containsKey(url)) {
-            reporterMap.put(url, new AnglesReporter(url));
+    public static AnglesReporterInterface getInstance(String url) {
+        if (!AnglesReporter.reporterMap.containsKey(url)) {
+            if (url.equals("empty")) {
+                AnglesReporter.reporterMap.put(url, new AnglesReporterEmpty(url));
+            } else {
+                AnglesReporter.reporterMap.put(url, new AnglesReporter(url));
+            }
         }
-        return reporterMap.get(url);
+        return AnglesReporter.reporterMap.get(url);
     }
 
     private AnglesReporter(String url) {

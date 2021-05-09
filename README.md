@@ -16,6 +16,7 @@ Simply add the following dependency to your POM:
 Please also ensure you set the following system variables (e.g. as part of the maven-surefire-plugin):
 ```
 <systemPropertyVariables>
+    <angles.enabled>true</angles.enabled>
     <angles.url>http://127.0.0.1:3000</angles.url>
     <angles.runName>SampleRunName</angles.runName>
     <angles.team>SampleTeamName</angles.team>

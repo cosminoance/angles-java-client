@@ -1,6 +1,6 @@
 package com.github.angleshq.angles.basetest;
 
-import com.github.angleshq.angles.AnglesReporter;
+import com.github.angleshq.angles.AnglesReporterInterface;
 import com.github.angleshq.angles.exceptions.AnglesPropertyNotGivenException;
 
 import static com.github.angleshq.angles.util.AnglesReporterUtils.getComponent;
@@ -11,7 +11,7 @@ import static com.github.angleshq.angles.util.AnglesReporterUtils.initialiseAngl
 
 public abstract class AbstractAnglesTestCase {
 
-    protected AnglesReporter anglesReporter;
+    protected AnglesReporterInterface anglesReporter;
 
     protected AbstractAnglesTestCase() {
         try {
