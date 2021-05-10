@@ -11,7 +11,7 @@ import java.util.List;
 public class AnglesReporterEmpty implements AnglesReporterInterface {
 
     public AnglesReporterEmpty() {
-        // don't do anything
+        // do nothing
     }
 
     public void startBuild(String name, String environmentName, String teamName, String componentName) {
