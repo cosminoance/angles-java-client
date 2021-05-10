@@ -1,6 +1,7 @@
 package com.github.angleshq.angles.listeners.log4j2;
 
 import com.github.angleshq.angles.AnglesReporter;
+import com.github.angleshq.angles.AnglesReporterInterface;
 import com.github.angleshq.angles.exceptions.AnglesPropertyNotGivenException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.Appender;
@@ -21,7 +22,7 @@ import static com.github.angleshq.angles.util.AnglesReporterUtils.getAnglesPrope
 @Plugin(name = "AnglesLog4j2LogAppender", category = "Core", elementType = Appender.ELEMENT_TYPE)
 public class AnglesLog4j2LogAppender extends AbstractAppender {
 
-    protected AnglesReporter anglesReporter;
+    protected AnglesReporterInterface anglesReporter;
 
     protected AnglesLog4j2LogAppender(String name, Filter filter, Layout<? extends Serializable> layout,
                                       boolean ignoreExceptions, Property[] properties)

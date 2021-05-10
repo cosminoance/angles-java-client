@@ -1,24 +1,37 @@
 package com.github.angleshq.angles.util;
 
 import com.github.angleshq.angles.AnglesReporter;
+import com.github.angleshq.angles.AnglesReporterInterface;
 import com.github.angleshq.angles.exceptions.AnglesPropertyNotGivenException;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class AnglesReporterUtils {
 
-    private static AnglesReporter anglesReporter;
+    private static AnglesReporterInterface anglesReporter;
     private static String runName;
     private static String team;
     private static String component;
     private static String environment;
 
-    public static AnglesReporter initialiseAnglesTestParameters() throws AnglesPropertyNotGivenException {
-        anglesReporter = AnglesReporter.getInstance(getAnglesPropertyFromSystem("angles.url") + "/rest/api/v1.0/");
-        runName = getAnglesPropertyFromSystem("angles.runName");
-        team = getAnglesPropertyFromSystem("angles.team");
-        component = getAnglesPropertyFromSystem("angles.component");
-        environment = getAnglesPropertyFromSystem("angles.environment");
+    public static AnglesReporterInterface initialiseAnglesTestParameters() throws AnglesPropertyNotGivenException {
+        String enabled = "false";
+        try {
+            enabled = getAnglesPropertyFromSystem("angles.enabled");
+        } catch (AnglesPropertyNotGivenException exception) {
+            // if angles.enabled is not provided default is false.
+        }
+        if (enabled.equals("true")) {
+            anglesReporter = AnglesReporter.getInstance(getAnglesPropertyFromSystem("angles.url") + "/rest/api/v1.0/");
+            runName = getAnglesPropertyFromSystem("angles.runName");
+            team = getAnglesPropertyFromSystem("angles.team");
+            component = getAnglesPropertyFromSystem("angles.component");
+            environment = getAnglesPropertyFromSystem("angles.environment");
+        } else {
+            // angles has been disabled.
+            AnglesReporter.setEnabled(false);
+            anglesReporter = AnglesReporter.getInstance(null);
+        }
         return anglesReporter;
     }
 
@@ -30,7 +43,7 @@ public class AnglesReporterUtils {
         return propertyValue;
     }
 
-    public static AnglesReporter getAnglesReporter() {
+    public static AnglesReporterInterface getAnglesReporter() {
         return anglesReporter;
     }
 
