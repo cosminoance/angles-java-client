@@ -20,7 +20,9 @@ import java.util.Map;
 public class AnglesReporter implements AnglesReporterInterface {
 
     public static final String DEFAULT_ACTION_NAME = "Test Details";
+    public static final String EMPTY_REPORTER_NAME = "empty";
     private static Map<String, AnglesReporterInterface> reporterMap = new HashMap<>();
+    private static boolean enabled = true;
     private String baseUrl;
     private BuildRequests buildRequests;
     private ExecutionRequests executionRequests;
@@ -34,12 +36,17 @@ public class AnglesReporter implements AnglesReporterInterface {
     private ThreadLocal<Action> setUpAction = new InheritableThreadLocal<>();
 
     public static AnglesReporterInterface getInstance(String url) {
-        if (!AnglesReporter.reporterMap.containsKey(url)) {
-            if (url.equals("empty")) {
-                AnglesReporter.reporterMap.put(url, new AnglesReporterEmpty(url));
-            } else {
-                AnglesReporter.reporterMap.put(url, new AnglesReporter(url));
+        // if angles is disabled, return the empty reporter
+        if (!enabled) {
+            if (!AnglesReporter.reporterMap.containsKey(EMPTY_REPORTER_NAME)) {
+                AnglesReporter.reporterMap.put(EMPTY_REPORTER_NAME, new AnglesReporterEmpty());
             }
+            return AnglesReporter.reporterMap.get(EMPTY_REPORTER_NAME);
+        }
+
+        // if not disabled then return the reporter.
+        if (!AnglesReporter.reporterMap.containsKey(url)) {
+            AnglesReporter.reporterMap.put(url, new AnglesReporter(url));
         }
         return AnglesReporter.reporterMap.get(url);
     }
@@ -227,4 +234,18 @@ public class AnglesReporter implements AnglesReporterInterface {
         }
         return null;
     }
+
+    /**
+     * This method allows you to disable angles (in case you wanted to have a local run).
+     *
+     * @param enabled e.g. false to disable reporting to angles (and you will get an empty reporter).
+     */
+    public static void setEnabled(boolean enabled) {
+        AnglesReporter.enabled = enabled;
+    }
+
+    public static boolean isEnabled() {
+        return AnglesReporter.enabled;
+    }
+
 }

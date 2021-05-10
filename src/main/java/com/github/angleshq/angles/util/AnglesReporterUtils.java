@@ -23,7 +23,9 @@ public class AnglesReporterUtils {
             component = getAnglesPropertyFromSystem("angles.component");
             environment = getAnglesPropertyFromSystem("angles.environment");
         } else {
-            anglesReporter = AnglesReporter.getInstance("empty");
+            // angles has been disabled.
+            AnglesReporter.setEnabled(false);
+            anglesReporter = AnglesReporter.getInstance(null);
         }
         return anglesReporter;
     }

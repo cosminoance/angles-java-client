@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AnglesReporterEmpty implements AnglesReporterInterface {
 
-    public AnglesReporterEmpty(String url) {
+    public AnglesReporterEmpty() {
         // don't do anything
     }
 
