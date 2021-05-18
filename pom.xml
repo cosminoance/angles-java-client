@@ -6,7 +6,7 @@
 
     <groupId>com.github.angleshq</groupId>
     <artifactId>angles-java-client</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
 
     <name>Angles Java client</name>
     <description>This is the java client for the Angles test results dashboard and contains all the necessary methods to store your test results in the Angles dashboard.</description>
