@@ -32,10 +32,13 @@ AnglesTestngBaseTest
 ```
 
 ### JUnit5
-Extend your base/test class with:
+Extend with the `AnglesJunit5Extension` extension class in order to have the Junit test result logged into Angles. 
+Optional `Angles` handled assertions are available at test level by instantiating `AnglesJunit5Assert`.
+
+```java
+@ExtendWith(AnglesJUnit5Extension.class)
 ```
-AnglesJUnit5BaseTest
-```
+
 ### Cucumber 2
 - Extend the step definition file with: 
     ```java
@@ -72,9 +75,17 @@ Please bear in mind that this appender standalone will not be able to push logs 
 
 
 ### Using Assertions
-Example assertion usage:
-```
-doAssert.assertEquals("expected", "actual", "This is a message");
+In order to do assertions that are captured by the Angles dashboard, you can instantiate the `AnglesJUnit5Assert` at the test script level.
+
+```java
+AnglesJUnit5Assert doAssert = new AnglesJUnit5Assert();
 ```
 
-If you are using Testng or JUnit5 and have already extended the relevant BaseTest classes as detailed above, you will have access to the "doAssert" object. This object would have access to the respective Assert (Testng) or Assertions (JUnit5) methods.
+>Example assertion usage:
+```
+doAssert.assertEquals(expected, actual, "info about assertion");
+```
+
+If you are using Testng and have already extended the relevant `AnglesTestngBaseTest` class, you will have access to the `doAssert` object. 
+
+The Junit5 and TestNG assert objects wrap the respective Assert (Testng) or Assertions (JUnit5) methods.
