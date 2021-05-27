@@ -38,10 +38,12 @@ public class ScreenshotRequests extends BaseRequests {
         MultipartEntityBuilder entityBuilder = MultipartEntityBuilder
             .create()
             .addBinaryBody("screenshot", screenShotFile, ContentType.getByMimeType(mimeType), screenShotFile.getName())
-            .addTextBody("view", createScreenshot.getView())
             .addTextBody("buildId", createScreenshot.getBuildId())
             .addTextBody("timestamp", sdf.format(createScreenshot.getTimestamp()))
             .setContentType(ContentType.MULTIPART_FORM_DATA);
+        if (createScreenshot.getView() != null) {
+            entityBuilder.addTextBody("view", createScreenshot.getView());
+        }
         if (createScreenshot.getPlatform() != null) {
             Platform platform = createScreenshot.getPlatform();
             if (platform.getPlatformName() != null) entityBuilder.addTextBody("platformName", platform.getPlatformName());

@@ -116,8 +116,10 @@ public class AnglesReporter implements AnglesReporterInterface {
 
     public void saveTest() {
         try {
-            executionRequests.create(currentExecution.get());
-            currentExecution.set(null);
+            if (currentExecution.get() != null) {
+                executionRequests.create(currentExecution.get());
+                currentExecution.set(null);
+            }
         }  catch (IOException | AnglesServerException exception) {
             throw new Error("Unable to save/update test execution due to [" + exception.getMessage() + "]");
         }
