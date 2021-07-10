@@ -5,7 +5,7 @@
     <groupId>com.github.angleshq</groupId>
     <artifactId>angles-java-client</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.12</version>
+    <version>1.0.13</version>
     <modules>
         <module>angles-java-core</module>
         <module>angles-testng</module>

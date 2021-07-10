@@ -4,23 +4,26 @@
         <artifactId>angles-java-client</artifactId>
         <groupId>com.github.angleshq</groupId>
         <relativePath>../pom.xml</relativePath>
-        <version>1.0.12</version>
+        <version>1.0.13</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>angles-cucumberjvm</artifactId>
-    <version>1.0.12</version>
-
+    <version>1.0.13</version>
+    <properties>
+        <!-- AnglesCucumber2Adapter cucumber version -->
+        <cucumber.core.version>2.3.1</cucumber.core.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.github.angleshq</groupId>
             <artifactId>angles-java-core</artifactId>
-            <version>1.0.12</version>
+            <version>1.0.13</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.angleshq</groupId>
             <artifactId>angles-junit5</artifactId>
-            <version>1.0.12</version>
+            <version>1.0.13</version>
             <scope>compile</scope>
         </dependency>
 
@@ -44,9 +47,4 @@
             <version>${cucumber.core.version}</version>
         </dependency>
     </dependencies>
-    <properties>
-        <!-- AnglesCucumber2Adapter cucumber version -->
-        <cucumber.core.version>2.3.1</cucumber.core.version>
-    </properties>
-
 </project>
