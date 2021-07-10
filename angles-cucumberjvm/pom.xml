@@ -10,7 +10,6 @@
     <artifactId>angles-cucumberjvm</artifactId>
     <version>1.0.14</version>
     <properties>
-        <!-- AnglesCucumber2Adapter cucumber version -->
         <cucumber.core.version>2.3.1</cucumber.core.version>
     </properties>
     <dependencies>
