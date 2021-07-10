@@ -110,26 +110,6 @@
         </plugins>
     </build>
     <dependencies>
-        <!-- Cucumber bdd and spring tests -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-core</artifactId>
-            <!-- latst version that supports our usage of DataTable -->
-            <version>${cucumber.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <!-- version that supports cucumber core-->
-            <version>${cucumber.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
-            <!-- version that supports cucumber core-->
-            <version>${cucumber.core.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
