@@ -24,28 +24,29 @@ jobs:
         with:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
-
       - name: GPG user IDs
         run: |
           echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
           echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
           echo "name:        ${{ steps.import_gpg.outputs.name }}"
           echo "email:       ${{ steps.import_gpg.outputs.email }}"
+      - name: Set versions for release
+        - run: mvn versions:set -DremoveSnapshot -DgenerateBackupPoms=false
       - name: Publish package
         run: mvn --batch-mode deploy -Psign
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-      - name: Bump Versions
+      - name: Bump Versions and add SNAPSHOT
         id: bump
         run: mvn --batch-mode release:update-versions
       - name: Grab new version
-        run: echo '::set-output name=VERSION::$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)'
-        id: version
+        run: echo "::set-output name=MVNVERSION::$(mvn -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -q)"
+        id: mvnversion
       - name: Print Version
-        run: "echo 'New Version: ${{steps.version.outputs.VERSION}}'"
+        run: "echo 'New Version: ${{steps.mvnversion.outputs.MVNVERSION}}'"
       - name: Commit & Push changes
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          message: 'Updating to dev version: ${{steps.version.outputs.VERSION}}'
+          message: 'Updating to dev version: ${{steps.mvnversion.outputs.MVNVERSION}}'
