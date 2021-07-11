@@ -37,6 +37,16 @@ jobs:
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+      - name: Grab release version
+        run: echo "::set-output name=MVNVERSION::$(mvn -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -q)"
+        id: releaseversion
+      - name: Print Release Version
+        run: "echo 'Release Version: ${{steps.releaseversion.outputs.MVNVERSION}}'"
+      - name: Tag Release
+        uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: ${{ steps.releaseversion.outputs.MVNVERSION }}
+          message: '${{ steps.releaseversion.outputs.MVNVERSION}}'
       - name: Bump Versions and add SNAPSHOT
         id: bump
         run: mvn --batch-mode release:update-versions
@@ -49,4 +59,4 @@ jobs:
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          message: 'Updating to dev version: ${{steps.mvnversion.outputs.MVNVERSION}}'
+          message: "Updating to dev version: ${{steps.mvnversion.outputs.MVNVERSION}}"
