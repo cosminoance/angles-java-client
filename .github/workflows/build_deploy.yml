@@ -31,15 +31,21 @@ jobs:
           echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
           echo "name:        ${{ steps.import_gpg.outputs.name }}"
           echo "email:       ${{ steps.import_gpg.outputs.email }}"
-      - name: Bump Version
-        id: bump
-        uses: nnichols/maven-version-bump-action@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Print Version
-        run: "echo 'New Version: ${{steps.bump.outputs.version}}'"
       - name: Publish package
         run: mvn --batch-mode deploy -Psign
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+      - name: Bump Versions
+        id: bump
+        run: mvn --batch-mode release:update-versions
+      - name: Grab new version
+        run: VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)
+        id: version
+      - name: Print Version
+        run: "echo 'New Version: ${{steps.version.outputs.VERSION}}'"
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: 'Updating to dev version: ${{steps.version.outputs.VERSION}}'
