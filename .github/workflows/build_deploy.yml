@@ -54,8 +54,14 @@ jobs:
         id: mvnversion
       - name: Print Version
         run: "echo 'New Version: ${{steps.mvnversion.outputs.MVNVERSION}}'"
+      - name: Find and Replace ReadMe versions
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "<version>.*</version>"
+          replace: "<version>${{steps.releaseversion.outputs.MVNVERSION}}</version>"
+          include: "README.md"
       - name: Commit & Push changes
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          message: "Updating to dev version: ${{steps.mvnversion.outputs.MVNVERSION}}"
+          message: "Updating maven dev version: ${{steps.mvnversion.outputs.MVNVERSION}}, and updating ReadMe files with latest released version."

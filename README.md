@@ -2,18 +2,18 @@
 
 
 ### Maven dependency
-The angles java client has been published to the maven repository. 
+The Angles java client allows various Java Test Execution frameworks to take advantage of the Angles Dashboard.
 
-Simply add the following dependency to your POM:
-``` xml
-<dependency>
-  <groupId>com.github.angleshq</groupId>
-  <artifactId>angles-java-client</artifactId>
-  <version>1.0.0-BETA6</version>
-</dependency>
-```
+At the moment we provide libraries for the following the following java execution frameworks:
+- [TestNG](./angles-testng/README.md)
+- [Junit5](./angles-junit5/README.md)
+- [CucumberJVM](./angles-cucumberjvm/README.md)
 
-Please also ensure you set the following system variables (e.g. as part of the maven-surefire-plugin):
+If your own java test execution framework is not in the list, you are able to use the Angles Java client directly by adding the [angles-java-core](./angles-java-core/README.md) as a dependency.
+
+
+### Configuring the clients
+Please ensure you set the following system variables (e.g. as part of the maven-surefire-plugin):
 ```
 <systemPropertyVariables>
     <angles.enabled>true</angles.enabled>
@@ -25,38 +25,7 @@ Please also ensure you set the following system variables (e.g. as part of the m
 </systemPropertyVariables>
 ```
 
-### Testng
-Extend your base/test class with:
-```
-AnglesTestngBaseTest
-```
-
-### JUnit5
-Extend with the `AnglesJunit5Extension` extension class in order to have the Junit test result logged into Angles. 
-Optional `Angles` handled assertions are available at test level by instantiating `AnglesJunit5Assert`.
-
-```java
-@ExtendWith(AnglesJUnit5Extension.class)
-```
-
-### Cucumber 2
-- Extend the step definition file with: 
-    ```java
-    public class StepDef extends AnglesCucumber2Adapter
-    ```
-    - Include `AnglesCucumber2Adapter` as a plugin in the *run with* class if you run through `Maven`
-        ```java
-        @CucumberOptions(plugin = { 
-              "com.github.angleshq.angles.listeners.cucumber.AnglesCucumber2Adapter"})   
-        ```
-- Inside the `step definition` class, you need to include an empty `@Before` method to allow instantiation of the `Angles` reporter.
-    ```java
-  @Before
-    public static void initilizeAnglesAdapter() {
-    }
-    ```
-  
-### Log4j2 Appender
+### Log4j2 Appender 
 Add the appender to your log4j2 configuration file:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -72,20 +41,3 @@ Add the appender to your log4j2 configuration file:
 </Configuration>
 ```
 Please bear in mind that this appender standalone will not be able to push logs to your Angles Dashboard and requires this to be coupled with a test execution framework like JUnit5 or Testng. i.e. This plugin will not create new runs/builds.
-
-
-### Using Assertions
-In order to do assertions that are captured by the Angles dashboard, you can instantiate the `AnglesJUnit5Assert` at the test script level.
-
-```java
-AnglesJUnit5Assert doAssert = new AnglesJUnit5Assert();
-```
-
->Example assertion usage:
-```
-doAssert.assertEquals(expected, actual, "info about assertion");
-```
-
-If you are using Testng and have already extended the relevant `AnglesTestngBaseTest` class, you will have access to the `doAssert` object. 
-
-The Junit5 and TestNG assert objects wrap the respective Assert (Testng) or Assertions (JUnit5) methods.
