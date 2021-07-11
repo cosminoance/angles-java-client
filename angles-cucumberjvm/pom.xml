@@ -4,11 +4,11 @@
         <artifactId>angles-java-client</artifactId>
         <groupId>com.github.angleshq</groupId>
         <relativePath>../pom.xml</relativePath>
-        <version>1.0.21-SNAPSHOT</version>
+        <version>1.0.22-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>angles-cucumberjvm</artifactId>
-    <version>1.0.21-SNAPSHOT</version>
+    <version>1.0.22-SNAPSHOT</version>
     <properties>
         <cucumber.core.version>2.3.1</cucumber.core.version>
     </properties>
@@ -16,13 +16,13 @@
         <dependency>
             <groupId>com.github.angleshq</groupId>
             <artifactId>angles-java-core</artifactId>
-            <version>1.0.21-SNAPSHOT</version>
+            <version>1.0.22-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.angleshq</groupId>
             <artifactId>angles-junit5</artifactId>
-            <version>1.0.21-SNAPSHOT</version>
+            <version>1.0.22-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
