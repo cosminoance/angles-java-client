@@ -46,7 +46,6 @@ jobs:
         uses: actions-ecosystem/action-push-tag@v1
         with:
           tag: ${{ steps.releaseversion.outputs.MVNVERSION }}
-          message: '${{ steps.releaseversion.outputs.MVNVERSION}}'
       - name: Bump Versions and add SNAPSHOT
         id: bump
         run: mvn --batch-mode release:update-versions
