@@ -31,7 +31,7 @@ jobs:
           echo "name:        ${{ steps.import_gpg.outputs.name }}"
           echo "email:       ${{ steps.import_gpg.outputs.email }}"
       - name: Set versions for release
-        - run: mvn versions:set -DremoveSnapshot -DgenerateBackupPoms=false
+        run: mvn versions:set -DremoveSnapshot -DgenerateBackupPoms=false
       - name: Publish package
         run: mvn --batch-mode deploy -Psign
         env:
